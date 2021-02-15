@@ -46,16 +46,16 @@ Example input (binary):
 ```
 0xe7000000, 0x00000000,
 0xfc127e03, 0xfffffdf8,
-0xe200001c, 0xc8112078,
-0xd9f1ffff, 0x00000000,
-0xd9ffffff, 0x00010400,
+0xb900031d, 0xc8112078,
+0xb6000000, 0x000e0000,
+0xb7000000, 0x00012000,
 0xfa000000, 0xffffffff,
-0x0100c018, 0x000002e0,
-0x06000204, 0x00020604,
-0x06080a0c, 0x000a0e0c,
-0x060a1012, 0x000a120e,
-0x06140200, 0x00140016,
-0xdf000000, 0x00000000,
+0x040030bf, 0x000002e0,
+0xb1000204, 0x00020604,
+0xb1080a0c, 0x000a0e0c,
+0xb10a1012, 0x000a120e,
+0xb1140200, 0x00140016,
+0xb8000000, 0x00000000,
 ```
 
 Example output:
@@ -70,8 +70,8 @@ Example output:
         gsSPVertex(0x000002E0, 12, 0),
         gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
         gsSP2Triangles(4, 5, 6, 0, 5, 7, 6, 0),
-        gsSP2Triangles(5, 8, 9, 0, 5, 9, 7, 0),
-        gsSP2Triangles(10, 1, 0, 0, 10, 0, 11, 0),
+        gsSP1Quadrangle(5, 8, 9, 7, 0),
+        gsSP1Quadrangle(10, 1, 0, 11, 0),
         gsSPEndDisplayList(),
 }
 ```
@@ -182,98 +182,103 @@ The following functions can be used for registering argument callbacks;
 typedef int gfxd_tlut_fn_t(uint32_t tlut, int32_t idx, int32_t count)
 void gfxd_tlut_callback(gfxd_tlut_fn_t *fn)
 ```
-Register a callback for `gfxd_Tlut` (palette) type arguments. Provides a 
-palette index in `idx` and the number of colors in `count`.
+Set the callback function for palette arguments. The argument type is
+`gfxd_Tlut`. The palette index is in `idx` and the number of colors in `count`.
 
 ```
 typedef int gfxd_timg_fn_t(uint32_t timg, int32_t fmt, int32_t siz,
 	int32_t width, int32_t height, int32_t pal)
 void gfxd_timg_callback(gfxd_timg_fn_t *fn)
 ```
-Register a callback for `gfxd_Timg` (texture) type arguments. Provides the image
-format in `fmt` and `siz`, the dimensions in `width`, and `height`, and the
-palette index in `pal`.
+Set the callback function for texture arguments. The argument type is
+`gfxd_Timg`. The image format is in `fmt` and `siz`, the dimensions in `width`
+and `height`, and the palette index in `pal`.
 
 ```
 typedef int gfxd_cimg_fn_t(uint32_t cimg, int32_t fmt, int32_t siz,
 	int32_t width)
 void gfxd_cimg_callback(gfxd_cimg_fn_t *fn)
 ```
-Register a callback for `gfxd_Cimg` (framebuffer) type arguments. Provides the
-image format in `fmt` and `siz`, the dimension in `width`.
+Set the callback function for frame buffer arguments. The argument type is
+`gfxd_Cimg`. The image format is in `fmt` and `siz`, and the horizontal
+resolution in `width`.
 
 ```
 typedef int gfxd_zimg_fn_t(uint32_t zimg)
 void gfxd_zimg_callback(gfxd_zimg_fn_t *fn)
 ```
-Register a callback for `gfxd_Zimg` (depth buffer) type arguments.
+Set the callback function for depth buffer arguments. The argument type is
+`gfxd_Zimg`.
 
 ```
 typedef int gfxd_dl_fn_t(uint32_t dl)
 void gfxd_dl_callback(gfxd_dl_fn_t *fn)
 ```
-Register a callback for `gfxd_Dl` (display list address) type arguments.
+Set the callback function for display list arguments. The argument type is
+`gfxd_Dl`.
 
 ```
 typedef int gfxd_mtx_fn_t(uint32_t mtx)
 void gfxd_mtx_callback(gfxd_mtx_fn_t *fn)
 ```
-Register a callback for `gfxd_Mtxptr` (matrix) type arguments. 
+Set the callback function for matrix arguments. The argument type is
+`gfxd_Mtxptr`.
 
 ```
 typedef int gfxd_lookat_fn_t(uint32_t lookat, int32_t count)
 void gfxd_lookat_callback(gfxd_lookat_fn_t *fn)
 ```
-Register a callback for `gfxd_Lookatptr` (lookat array) type arguments. 
-Provides the number of lookat structures (1 or 2) in `count`. 
+Set the callback function for lookat array arguments. The argument type is
+`gfxd_Lookatptr`. The number of lookat structures (1 or 2) is in `count`. 
 
 ```
 typedef int gfxd_light_fn_t(uint32_t light, int32_t count)
 void gfxd_light_callback(gfxd_light_fn_t *fn)
 ```
-Register a callback for `gfxd_Lightptr` (light array) type arguments. Provides
-the number of light structures in `count`.
+Set the callback function for light array arguments. The argument type is
+`gfxd_Lightptr`. The number of light structures is in `count`.
 
 ```
 typedef int gfxd_seg_fn_t(uint32_t seg, int32_t num)
 void gfxd_seg_callback(gfxd_seg_fn_t *fn)
 ```
-Register a callback for `gfxd_Segptr` (segment base) type arguments. Provides
-the segment number in `num`.
+Set the callback function for segment base arguments. The argument type is
+`gfxd_Segptr`. The segment number is in `num`.
 
 ```
 typedef int gfxd_vtx_fn_t(uint32_t vtx, int32_t num)
 void gfxd_vtx_callback(gfxd_vtx_fn_t *fn)
 ```
-Register a callback for `gfxd_Vtxptr` (vertex array) type arguments. Provides
-the number of vertices number in `num`.
+Set the callback function for vertex array arguments. The argument type is
+`gfxd_Vtxptr`. The number of vertex structures is in `num`.
 
 ```
 typedef int gfxd_vp_fn_t(uint32_t vp)
 void gfxd_vp_callback(gfxd_vp_fn_t *fn)
 ```
-Register a callback for `gfxd_Vp` (viewport) type arguments.
+Set the callback function for viewport arguments. The argument type is
+`gfxd_Vp`.
 
 ```
 typedef int gfxd_uctext_fn_t(uint32_t text, uint32_t size)
 void gfxd_uctext_callback(gfxd_uctext_fn_t *fn)
 ```
-Register a callback for `gfxd_Uctext` (microcode text) type arguments. Provides
-the size of the text segment in `size`.
+Set the callback function for microcode text arguments. The argument type is
+`gfxd_Uctext`. The size of the text segment is in `size`.
 
 ```
 typedef int gfxd_ucdata_fn_t(uint32_t data, uint32_t size)
 void gfxd_ucdata_callback(gfxd_ucdata_fn_t *fn)
 ```
-Register a callback for `gfxd_Ucdata` (microcode data) type arguments. Provides
-the size of the data segment in `size`.
+Set the callback function for microcode data arguments. The argument type is
+`gfxd_Ucdata`. The size of the data segment is in `size`.
 
 ```
 typedef int gfxd_dram_fn_t(uint32_t dram, uint32_t size)
 void gfxd_dram_callback(gfxd_dram_fn_t *fn)
 ```
-Register a callback for `gfxd_Dram` (generic pointer) type arguments. Provides
-the size of the data in `size`.
+Set the callback function for generic pointer arguments. The argument type is
+`gfxd_Dram`. The size of the data is in `size`.
 
 ## General settings
 These functions control general input and output settings.

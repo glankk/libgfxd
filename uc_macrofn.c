@@ -7,7 +7,7 @@
 #define argi(idx, name, value, type) \
 	({ \
 		gfxd_arg_t *arg__ = &m->arg[idx]; \
-		arg__->t##ype = type; \
+		arg__->t##ype = (type); \
 		arg__->n##ame = (name); \
 		arg__->v##alue.i = (value); \
 		arg__->bad = 0; \
@@ -15,7 +15,7 @@
 #define argu(idx, name, value, type) \
 	({ \
 		gfxd_arg_t *arg__ = &m->arg[idx]; \
-		arg__->t##ype = type; \
+		arg__->t##ype = (type); \
 		arg__->n##ame = (name); \
 		arg__->v##alue.u = (value); \
 		arg__->bad = 0; \
@@ -23,7 +23,7 @@
 #define argf(idx, name, value, type) \
 	({ \
 		gfxd_arg_t *arg__ = &m->arg[idx]; \
-		arg__->t##ype = type; \
+		arg__->t##ype = (type); \
 		arg__->n##ame = (name); \
 		arg__->v##alue.f = (value); \
 		arg__->bad = 0; \

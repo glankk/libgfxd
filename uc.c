@@ -10,9 +10,9 @@
 #include "uc_macrofn.c"
 #include "uc_macrotbl.c"
 
-static int disas(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
+UCFUNC int disas(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
-	int opcode = getfield(hi, 8, 24);
+	int opcode = (hi >> 24) & 0xFF;
 
 	for (int i = 0; i < sizeof(macro_tbl) / sizeof(macro_tbl[0]); i++)
 	{
@@ -24,7 +24,7 @@ static int disas(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return d_Invalid(m, hi, lo);
 }
 
-static int combine(gfxd_macro_t *m, int num)
+UCFUNC int combine(gfxd_macro_t *m, int num)
 {
 	int opcode = macro_tbl[m->id].opcode;
 
