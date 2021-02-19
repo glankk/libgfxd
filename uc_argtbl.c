@@ -261,15 +261,10 @@ static const gfxd_arg_type_t arg_tbl[] =
 		.fn = argfn_x32,
 	},
 #if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
-	[gfxd_Zf] =
-	{
-		.fmt = gfxd_argfmt_f,
-		.fn = argfn_f,
-	},
-	[gfxd_Bz] =
+	[gfxd_Zraw] =
 	{
 		.fmt = gfxd_argfmt_i,
-		.fn = argfn_bz,
+		.fn = argfn_qs1616,
 	},
 #endif
 	[gfxd_Dlflag] =

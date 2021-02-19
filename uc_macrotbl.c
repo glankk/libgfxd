@@ -672,42 +672,24 @@ static const gfxd_macro_type_t macro_tbl[] =
 	},
 #endif
 #if defined(F3D_BETA) && defined(F3DEX_GBI)
-	[gfxd_SPBranchLessZ] =
+	[gfxd_SPBranchLessZraw] =
 	{
 		.prefix = NULL,
-		.suffix = "SPBranchLessZ",
+		.suffix = "SPBranchLessZraw",
 		.opcode = G_RDPHALF_2,
 		.n_gfx = 2,
-		.n_arg = 6,
-		.combine_fn = c_SPBranchLessZ,
-	},
-	[gfxd_SPBranchLessZrg] =
-	{
-		.prefix = NULL,
-		.suffix = "SPBranchLessZrg",
-		.opcode = G_RDPHALF_2,
-		.n_gfx = 2,
-		.n_arg = 8,
-		.combine_fn = c_SPBranchLessZrg,
+		.n_arg = 3,
+		.combine_fn = c_SPBranchLessZraw,
 	},
 #elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
-	[gfxd_SPBranchLessZ] =
+	[gfxd_SPBranchLessZraw] =
 	{
 		.prefix = NULL,
-		.suffix = "SPBranchLessZ",
+		.suffix = "SPBranchLessZraw",
 		.opcode = G_RDPHALF_1,
 		.n_gfx = 2,
-		.n_arg = 6,
-		.combine_fn = c_SPBranchLessZ,
-	},
-	[gfxd_SPBranchLessZrg] =
-	{
-		.prefix = NULL,
-		.suffix = "SPBranchLessZrg",
-		.opcode = G_RDPHALF_1,
-		.n_gfx = 2,
-		.n_arg = 8,
-		.combine_fn = c_SPBranchLessZrg,
+		.n_arg = 3,
+		.combine_fn = c_SPBranchLessZraw,
 	},
 #endif
 	[gfxd_SPBranchList] =
@@ -1166,7 +1148,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.suffix = "BranchZ",
 		.opcode = G_BRANCH_Z,
 		.n_gfx = 1,
-		.n_arg = 7,
+		.n_arg = 2,
 		.disas_fn = d_BranchZ,
 	},
 #endif

@@ -61,8 +61,7 @@ enum
 	gfxd_Vtx,		/* vertex index */
 	gfxd_Vtxflag,		/* vertex flag */
 	gfxd_Dl,		/* display list pointer */
-	gfxd_Zf,		/* floating-point depth */
-	gfxd_Bz,		/* depth branch flag */
+	gfxd_Zraw,		/* raw depth value (q16.16) */
 	gfxd_Dlflag,		/* display list flag */
 	gfxd_Cr,		/* clip ratio */
 	gfxd_Num,		/* element count */
@@ -181,8 +180,7 @@ enum
 	gfxd_SP1Triangle,
 	gfxd_SP2Triangles,
 	gfxd_SP1Quadrangle,
-	gfxd_SPBranchLessZ,
-	gfxd_SPBranchLessZrg,
+	gfxd_SPBranchLessZraw,
 	gfxd_SPBranchList,
 	gfxd_SPClipRatio,
 	gfxd_SPCullDisplayList,

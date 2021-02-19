@@ -1,18 +1,33 @@
 /**
- * gbi.h version 0.3
+ * gbi.h version 0.3.1
  * n64 graphics microcode interface library
  * compatible with fast3d, f3dex, f3dex2, s2dex, and s2dex2
  *
  * select a microcode with one of these preprocessor definitions;
- * #define F3D_GBI
+ *   #define F3D_GBI
  * for fast3d (selected automatically by default), or
- * #define F3DEX_GBI
+ *   #define F3DEX_GBI
  * for f3dex/s2dex, or
- * #define F3DEX_GBI_2
+ *   #define F3DEX_GBI_2
  * for f3dex2/s2dex2
  *
  * for early versions of fast3d and f3dex, also define the following;
- * #define F3D_BETA
+ *   #define F3D_BETA
+ *
+ * ido incompatibilities;
+ * - use of c99 variadic macros
+ * - use of c99 fixed-width integer types
+ * - use of c99 designated initializers
+ * - use of c99 compound literals
+ * - use of c11 _Alignas
+ * - use of gnu c compound expressions
+ * - use of gnu c __typeof__
+ *
+ * libultra incompatibilities;
+ * - many private, undocumented, or obsolete macros not commonly used by
+ *   programmers are missing
+ * - many different implementation details that will produce matching gbi,
+ *   but not matching code
 **/
 
 #ifndef N64_GBI_H
@@ -2728,8 +2743,12 @@
 	gsSPBranchLessZrg(branchdl, vtx, zval, near, far, flag, 0, G_MAXZ)
 
 # define gsSPBranchLessZrg(branchdl, vtx, zval, near, far, flag, zmin, zmax) \
+	gsSPBranchLessZraw(branchdl, vtx, \
+		G_DEPTOZSrg(zval, near, far, flag, zmin, zmax))
+
+# define gsSPBranchLessZraw(branchdl, vtx, zval) \
 	gsDPHalf1(branchdl), \
-	gsBranchZ(vtx, zval, near, far, flag, zmin, zmax)
+	gsBranchZ(vtx, zval)
 
 # define gsSPCullDisplayList(v0, vn) \
 	gO_( \
@@ -2755,12 +2774,12 @@
 		gF_((vtx) * 2, 16, 0), \
 		val)
 
-# define gsBranchZ(vtx, zval, near, far, flag, zmin, zmax) \
+# define gsBranchZ(vtx, zval) \
 	gO_( \
 		G_BRANCH_Z, \
 		gF_((vtx) * 5, 12, 12) | \
 		gF_((vtx) * 2, 12, 0), \
-		G_DEPTOZSrg(zval, near, far, flag, zmin, zmax))
+		zval)
 
 # define gsLoadUcode(uc_start, uc_dsize) \
 	gO_( \
@@ -3120,6 +3139,8 @@
 	gD_(gdl, gsSPBranchLessZ, __VA_ARGS__)
 # define gSPBranchLessZrg(gdl, ...) \
 	gD_(gdl, gsSPBranchLessZrg, __VA_ARGS__)
+# define gSPBranchLessZraw(gdl, ...) \
+	gD_(gdl, gsSPBranchLessZraw, __VA_ARGS__)
 #endif
 #define gSPBranchList(gdl, ...) \
 	gD_(gdl, gsSPBranchList, __VA_ARGS__)

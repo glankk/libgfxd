@@ -1137,7 +1137,7 @@ UCFUNC int d_SP1Quadrangle(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return ret;
 }
 
-UCFUNC int c_SPBranchLessZ(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPBranchLessZraw(gfxd_macro_t *m, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
@@ -1146,50 +1146,12 @@ UCFUNC int c_SPBranchLessZ(gfxd_macro_t *m, int n_macro)
 	uint32_t branchdl = argvu(m[0], 0);
 	if (m[1].id != gfxd_BranchZ)
 		return -1;
-	int vtx = argvi(m[1], 0);
-	float zval = argvf(m[1], 1);
-	float near = argvf(m[1], 2);
-	float far = argvf(m[1], 3);
-	int flag = argvi(m[1], 4);
-	int zmin = argvi(m[1], 5);
-	int zmax = argvi(m[1], 6);
-	if (zmin != 0 || zmax != 0x3FF)
-		return -1;
-	m->id = gfxd_SPBranchLessZ;
+	int32_t vtx = argvi(m[1], 0);
+	int32_t zval = argvi(m[1], 1);
+	m->id = gfxd_SPBranchLessZraw;
 	argu(0, "dl", branchdl, gfxd_Dl);
 	argi(1, "vtx", vtx, gfxd_Vtx);
-	argf(2, "zval", zval, gfxd_Zf);
-	argf(3, "near", near, gfxd_Zf);
-	argf(4, "far", far, gfxd_Zf);
-	argi(5, "flag", flag, gfxd_Bz);
-	return 0;
-}
-
-UCFUNC int c_SPBranchLessZrg(gfxd_macro_t *m, int n_macro)
-{
-	if (n_macro < 2)
-		return -1;
-	if (m[0].id != gfxd_DPHalf1)
-		return -1;
-	uint32_t branchdl = argvu(m[0], 0);
-	if (m[1].id != gfxd_BranchZ)
-		return -1;
-	int vtx = argvi(m[1], 0);
-	float zval = argvf(m[1], 1);
-	float near = argvf(m[1], 2);
-	float far = argvf(m[1], 3);
-	int flag = argvi(m[1], 4);
-	int zmin = argvi(m[1], 5);
-	int zmax = argvi(m[1], 6);
-	m->id = gfxd_SPBranchLessZrg;
-	argu(0, "dl", branchdl, gfxd_Dl);
-	argi(1, "vtx", vtx, gfxd_Vtx);
-	argf(2, "zval", zval, gfxd_Zf);
-	argf(3, "near", near, gfxd_Zf);
-	argf(4, "far", far, gfxd_Zf);
-	argi(5, "flag", flag, gfxd_Bz);
-	argi(6, "zmin", zmin, gfxd_Zi);
-	argi(7, "zmax", zmax, gfxd_Zi);
+	argi(2, "zval", zval, gfxd_Zraw);
 	return 0;
 }
 #endif
@@ -2044,14 +2006,13 @@ UCFUNC int d_BranchZ(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	m->id = gfxd_BranchZ;
 	int na = getfield(hi, 12, 12);
 	int nb = getfield(hi, 12, 0);
-	float zval = 1023.f / (1023.f - (int32_t)lo / 65536.f);
+	int32_t zval;
+	if (lo > 0x7FFFFFFF)
+		zval = -0x80000000 + (int32_t)(lo & 0x7FFFFFFF);
+	else
+		zval = lo;
 	argi(0, "vtx", nb / 2, gfxd_Vtx);
-	argf(1, "zval", zval, gfxd_Zf);
-	argf(2, "near", 1, gfxd_Zf);
-	argf(3, "far", 1023, gfxd_Zf);
-	argi(4, "flag", G_BZ_PERSP, gfxd_Bz);
-	argi(5, "zmin", 0, gfxd_Zi);
-	argi(6, "zmax", 1023, gfxd_Zi);
+	argi(1, "zval", zval, gfxd_Zraw);
 	int ret = 0;
 	if (nb % 2 != 0 || na / 5 != nb / 2 || na % 5 != 0)
 	{

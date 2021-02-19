@@ -143,7 +143,7 @@ callback returns zero, or if there is no callback for the given argument.
 Set `fn` to be the argument handler function, called by `gfxd_macro_dflt`,
 for each argument in the current macro, not counting the dynamic display list
 pointers if one has been specified. `fn` can be null, in which case the handler
-is reset to the default. This only affects the output `gfxd_macro_dflt`, and
+is reset to the default. This only affects the output of `gfxd_macro_dflt`, and
 has no observable effect if `gfxd_macro_dflt` is overridden (not extended).
 
 ## Argument callbacks

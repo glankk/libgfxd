@@ -28,13 +28,6 @@ UCFUNC int argfn_x32(const gfxd_value_t *v)
 	return gfxd_printf("0x%08" PRIX32, v->u);
 }
 
-#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
-UCFUNC int argfn_f(const gfxd_value_t *v)
-{
-	return gfxd_printf("%g", v->f);
-}
-#endif
-
 UCFUNC int argfn_color(const gfxd_value_t *v)
 {
 	if (config.emit_dec_color)
@@ -115,6 +108,21 @@ UCFUNC int argfn_qs105(const gfxd_value_t *v)
 			return gfxd_printf("-0x%04" PRIX32, (uint32_t)-v->i);
 		else
 			return gfxd_printf("0x%04" PRIX32, (uint32_t)v->i);
+	}
+}
+
+UCFUNC int argfn_qs1616(const gfxd_value_t *v)
+{
+	if (v->i == 0)
+		return gfxd_puts("0");
+	else if (config.emit_q_macro)
+		return gfxd_printf("qs1616(%.16g)", v->i / 65536.f);
+	else
+	{
+		if (v->i < 0)
+			return gfxd_printf("-0x%08" PRIX32, (uint32_t)-v->i);
+		else
+			return gfxd_printf("0x%08" PRIX32, (uint32_t)v->i);
 	}
 }
 
