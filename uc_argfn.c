@@ -678,7 +678,7 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 	{
 		if (n > 0)
 			n += gfxd_puts(" | ");
-		rm_mode_str(rm);
+		n += rm_mode_str(rm);
 	}
 	int c = 0;
 	if (which & rm_c1_mask)
@@ -692,7 +692,7 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 		if (pre_c1)
 			n += gfxd_printf("%s", pre_c1->name);
 		else
-			rm_cbl_str(rm, 1);
+			n += rm_cbl_str(rm, 1);
 	}
 	if (c & 2 || (c == 0 && arg & rm_c2_mask))
 	{
@@ -701,7 +701,7 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 		if (pre_c2)
 			n += gfxd_printf("%s", pre_c2->name);
 		else
-			rm_cbl_str(rm, 2);
+			n += rm_cbl_str(rm, 2);
 	}
 	uint32_t unk_mask = ~(rm_mask | ac_mask | zs_mask);
 	if (arg & unk_mask)
