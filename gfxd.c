@@ -41,75 +41,35 @@ static int fd_output_fn(const char *buf, int count)
 	return write(config.output_fd, buf, count);
 }
 
-static uint32_t swap_word(uint32_t w)
+static void swap_words(Gfx *gfx)
 {
-	union
+	uint8_t b[8];
+	uint8_t *pw = (void *) gfx;
+	uint8_t *pb = b;
+
+	int endian = config.endian;
+	int wordsize = config.wordsize;
+
+	for (int i = 0; i < 8 / wordsize; i++)
 	{
-		uint8_t		b[4];
-		uint32_t	w;
-	} e =
-	{
-		.b =
+		for (int j = 0; j < wordsize; j++)
 		{
-			0x12,
-			0x34,
-			0x56,
-			0x78,
-		},
-	};
-	if (e.w == 0x12345678)
-	{
-		if (config.endian == gfxd_endian_little)
-		{
-			w = (w & 0xFF000000) >> 24
-				| (w & 0x00FF0000) >> 8
-				| (w & 0x0000FF00) << 8
-				| (w & 0x000000FF) << 24;
+			if (endian == gfxd_endian_little)
+				*pb++ = pw[wordsize - 1 - j];
+			else
+				*pb++ = pw[j];
 		}
-		else if (config.endian == gfxd_endian_pdp)
-		{
-			w = (w & 0xFF000000) >> 8
-				| (w & 0x00FF0000) << 8
-				| (w & 0x0000FF00) >> 8
-				| (w & 0x000000FF) << 8;
-		}
-	}
-	else if (e.w == 0x78563412)
-	{
-		if (config.endian == gfxd_endian_big)
-		{
-			w = (w & 0xFF000000) >> 24
-				| (w & 0x00FF0000) >> 8
-				| (w & 0x0000FF00) << 8
-				| (w & 0x000000FF) << 24;
-		}
-		else if (config.endian == gfxd_endian_pdp)
-		{
-			w = (w & 0xFF000000) >> 16
-				| (w & 0x00FF0000) >> 16
-				| (w & 0x0000FF00) << 16
-				| (w & 0x000000FF) << 16;
-		}
-	}
-	else if (e.w == 0x34127856)
-	{
-		if (config.endian == gfxd_endian_big)
-		{
-			w = (w & 0xFF000000) >> 8
-				| (w & 0x00FF0000) << 8
-				| (w & 0x0000FF00) >> 8
-				| (w & 0x000000FF) << 8;
-		}
-		else if (config.endian == gfxd_endian_little)
-		{
-			w = (w & 0xFF000000) >> 16
-				| (w & 0x00FF0000) >> 16
-				| (w & 0x0000FF00) << 16
-				| (w & 0x000000FF) << 16;
-		}
+		pw += wordsize;
 	}
 
-	return w;
+	gfx->hi = ((uint32_t) b[0] << 24)
+		| ((uint32_t) b[1] << 16)
+		| ((uint32_t) b[2] << 8)
+		| ((uint32_t) b[3] << 0);
+	gfx->lo = ((uint32_t) b[4] << 24)
+		| ((uint32_t) b[5] << 16)
+		| ((uint32_t) b[6] << 8)
+		| ((uint32_t) b[7] << 0);
 }
 
 static void get_more_input(void)
@@ -129,13 +89,12 @@ static void get_more_input(void)
 
 		while (state.n_gfx < state.n_byte / sizeof(Gfx))
 		{
-			Gfx *gfx = &state.gfx[state.n_gfx];
+			Gfx gfx = state.gfx[state.n_gfx];
 			gfxd_macro_t *m = &state.macro[state.n_gfx];
 
-			uint32_t hi = swap_word(gfx->hi);
-			uint32_t lo = swap_word(gfx->lo);
+			swap_words(&gfx);
 
-			int ret = config.ucode->disas_fn(m, hi, lo);
+			int ret = config.ucode->disas_fn(m, gfx.hi, gfx.lo);
 			if (ret != 0 && config.stop_on_invalid != 0)
 			{
 				state.end_input = 1;
@@ -171,6 +130,7 @@ struct gfxd_config config =
 {
 	.ucode = NULL,
 	.endian = gfxd_endian_big,
+	.wordsize = 4,
 	.arg = NULL,
 
 	.stop_on_invalid = 1,
@@ -612,9 +572,10 @@ void gfxd_target(gfxd_ucode_t ucode)
 	config.ucode = ucode;
 }
 
-void gfxd_endian(int endian)
+void gfxd_endian(int endian, int wordsize)
 {
 	config.endian = endian;
+	config.wordsize = wordsize;
 }
 
 void gfxd_dynamic(const char *arg)

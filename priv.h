@@ -68,6 +68,7 @@ struct gfxd_config
 {
 	gfxd_ucode_t		ucode;
 	int			endian;
+	int			wordsize;
 	const char *		arg;
 
 	int			stop_on_invalid;

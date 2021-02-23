@@ -21,14 +21,14 @@ int main()
 	gfxd_input_fd(fileno(stdin));
 	gfxd_output_fd(fileno(stdout));
 
-	/* Override the default output function to make it prettier */
+	/* Override the default macro handler to make the output prettier */
 	gfxd_macro_fn(macro_fn);
 
 	/* Select F3DEX as the target microcode */
 	gfxd_target(gfxd_f3dex);
 
-	/* Set the input endianness to big endian */
-	gfxd_endian(gfxd_endian_big);
+	/* Set the input endianness to big endian, and the word size to 4 */
+	gfxd_endian(gfxd_endian_big, 4);
 
 	/* Print an opening brace */
 	gfxd_puts("{\n");
@@ -282,10 +282,11 @@ selected before `gfxd_execute`, as no microcode is selected by default.
 
 ---
 
-##### `void gfxd_endian(int endian)`
-Select `endian` as the endianness of the input. `endian` can be
-`gfxd_endian_big`, `gfxd_endian_little`, or `gfxd_endian_pdp`. Big endian is
-selected by default.
+##### `void gfxd_endian(int endian, int wordsize)`
+Select `endian` as the endianness of the input, and `wordsize` as the size of
+each word in number of bytes. `endian` can be `gfxd_endian_big` or
+`gfxd_endian_little`. `wordsize` can be 1, 2, 4, or 8. Big endian is selected
+by default, with a word size of 4.
 
 ---
 
