@@ -326,10 +326,13 @@ int gfxd_arg_callbacks(int arg_num)
 		{
 			if (config.timg_fn != NULL)
 			{
+				int32_t siz = typed_arg_i(gfxd_Siz, 0);
+				if (siz == -1)
+					siz = G_IM_SIZ_4b;
 				return config.timg_fn(
 					typed_arg_u(gfxd_Timg, 0),
 					typed_arg_i(gfxd_Fmt, 0),
-					typed_arg_i(gfxd_Siz, 0),
+					siz,
 					typed_arg_i(gfxd_Dim, 0),
 					typed_arg_i(gfxd_Dim, 1),
 					typed_arg_i(gfxd_Pal, 0));
