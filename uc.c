@@ -41,7 +41,7 @@ UCFUNC int combine(gfxd_macro_t *m, int num)
 	return -1;
 }
 
-static struct gfxd_ucode uc =
+static const struct gfxd_ucode uc =
 {
 	.disas_fn = disas,
 	.combine_fn = combine,
@@ -49,4 +49,4 @@ static struct gfxd_ucode uc =
 	.macro_tbl = macro_tbl,
 };
 
-gfxd_ucode_t uc_name = &uc;
+const gfxd_ucode_t uc_name = &uc;
