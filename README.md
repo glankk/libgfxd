@@ -142,7 +142,7 @@ callback returns zero, or if there is no callback for the given argument.
 ##### `void gfxd_arg_fn(gfxd_arg_fn_t *fn)`
 Set `fn` to be the argument handler function, called by `gfxd_macro_dflt`,
 for each argument in the current macro, not counting the dynamic display list
-pointers if one has been specified. `fn` can be null, in which case the handler
+pointer if one has been specified. `fn` can be null, in which case the handler
 is reset to the default. This only affects the output of `gfxd_macro_dflt`, and
 has no observable effect if `gfxd_macro_dflt` is overridden (not extended).
 
@@ -277,8 +277,8 @@ These functions control general input and output settings.
 
 ##### `void gfxd_target(gfxd_ucode_t ucode)`
 Select `ucode` as the target microcode. `ucode` can be `gfxd_f3d`, `gfxd_f3db`,
-`gfxd_f3dex`, `gfxd_f3dexb`, or `gfxd_f3dex2`. The microcode must always be
-selected before `gfxd_execute`, as no microcode is selected by default.
+`gfxd_f3dex`, `gfxd_f3dexb`, or `gfxd_f3dex2`. The microcode must be selected
+before `gfxd_execute`, as no microcode is selected by default.
 
 ---
 
