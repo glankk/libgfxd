@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/param.h>
 #include "gbi.h"
 #include "gfxd.h"
 #include "priv.h"
