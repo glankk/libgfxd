@@ -61,18 +61,18 @@ Example input (binary):
 Example output:
 ```
 {
-        gsDPPipeSync(),
-        gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-        gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2),
-        gsSPClearGeometryMode(G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
-        gsSPSetGeometryMode(G_CULL_BACK | G_FOG),
-        gsDPSetPrimColor(0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
-        gsSPVertex(0x000002E0, 12, 0),
-        gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
-        gsSP2Triangles(4, 5, 6, 0, 5, 7, 6, 0),
-        gsSP1Quadrangle(5, 8, 9, 7, 0),
-        gsSP1Quadrangle(10, 1, 0, 11, 0),
-        gsSPEndDisplayList(),
+	gsDPPipeSync(),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
+	gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2),
+	gsSPClearGeometryMode(G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
+	gsSPSetGeometryMode(G_CULL_BACK | G_FOG),
+	gsDPSetPrimColor(0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
+	gsSPVertex(0x000002E0, 12, 0),
+	gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
+	gsSP2Triangles(4, 5, 6, 0, 5, 7, 6, 0),
+	gsSP1Quadrangle(5, 8, 9, 7, 0),
+	gsSP1Quadrangle(10, 1, 0, 11, 0),
+	gsSPEndDisplayList(),
 }
 ```
 
@@ -390,7 +390,7 @@ for informational and diagnostic purposes.
 
 ##### `int gfxd_arg_fmt(int arg_num)`
 Returns the data format of the argument with index `arg_num`. The return value
-will be `gfxd_argfmt_i` for `int32_t`,  `gfxd_argfmt_u` for `uint32_t`, or
+will be `gfxd_argfmt_i` for `int32_t`, `gfxd_argfmt_u` for `uint32_t`, or
 `gfxd_argfmt_f` for `float`. When accessing the value of the argument with
 `gfxd_arg_value`, the member with the corresponding type should be used.
 
