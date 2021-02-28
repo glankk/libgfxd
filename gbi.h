@@ -1,5 +1,5 @@
 /**
- * gbi.h version 0.3.1
+ * gbi.h version 0.3.2
  * n64 graphics microcode interface library
  * compatible with fast3d, f3dex, f3dex2, s2dex, and s2dex2
  *
@@ -238,9 +238,11 @@
 #define G_MDSFT_ALPHACOMPARE	0
 #define G_MDSFT_ZSRCSEL		2
 #define G_MDSFT_RENDERMODE	3
+#define G_MDSFT_BLENDER		16
 #define G_MDSIZ_ALPHACOMPARE	2
 #define G_MDSIZ_ZSRCSEL		1
 #define G_MDSIZ_RENDERMODE	29
+#define G_MDSIZ_BLENDER		13
 
 #define G_AC_NONE		(gI_(0b00) << G_MDSFT_ALPHACOMPARE)
 #define G_AC_THRESHOLD		(gI_(0b01) << G_MDSFT_ALPHACOMPARE)
@@ -1320,6 +1322,14 @@
 #define NUMLIGHTS_5		5
 #define NUMLIGHTS_6		6
 #define NUMLIGHTS_7		7
+#define LIGHT_1			1
+#define LIGHT_2			2
+#define LIGHT_3			3
+#define LIGHT_4			4
+#define LIGHT_5			5
+#define LIGHT_6			6
+#define LIGHT_7			7
+#define LIGHT_8			8
 
 /* light params for fast3d and f3dex */
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
@@ -2345,12 +2355,17 @@
 #define gsSPEndDisplayList() \
 	gO_(G_ENDDL, 0, 0)
 
-#define gsSPFogPosition(min, max) \
+#define gsSPFogFactor(fm, fo) \
 	gsMoveWd( \
 		G_MW_FOG, \
 		G_MWO_FOG, \
-		gF_(128000 / ((max) - (min)), 16, 16) | \
-		gF_((500 - (min)) * 256 / ((max) - (min)), 16, 0))
+		gF_(fm, 16, 16) | \
+		gF_(fo, 16, 0))
+
+#define gsSPFogPosition(min, max) \
+	gsSPFogFactor( \
+		(500 * 0x100) / ((max) - (min)), \
+		(500 - (min)) * 0x100 / ((max) - (min)))
 
 #define gsSPLine3D(v0, v1, flag) \
 	gsSPLineW3D(v0, v1, 0, flag)
@@ -2590,6 +2605,10 @@
 #define gsSPNoOp() \
 	gO_(G_SPNOOP, 0, 0)
 
+#define gsDPWord(wordhi, wordlo) \
+	gsDPHalf1(wordhi), \
+	gsDPHalf2(wordlo)
+
 /* instruction macros for fast3d */
 
 #if defined(F3D_GBI)
@@ -2781,6 +2800,11 @@
 
 # define gsSPLoadUcode(uc_start, uc_dstart) \
 	gsSPLoadUcodeEx(uc_start, uc_dstart, 0x800)
+
+# define gsSPLoadUcodeL(ucode) \
+	gsSPLoadUcode( \
+		gI_(&ucode##TextStart) & 0x1FFFFFFF, \
+		gI_(&ucode##DataStart) & 0x1FFFFFFF)
 
 # define gsSPModifyVertex(vtx, where, val) \
 	gO_( \
@@ -3167,6 +3191,8 @@
 	gD_(gdl, gsSPDisplayList, __VA_ARGS__)
 #define gSPEndDisplayList(gdl) \
 	gDisplayListPut(gdl, gsSPEndDisplayList())
+#define gSPFogFactor(gdl, ...) \
+	gD_(gdl, gsSPFogFactor, __VA_ARGS__)
 #define gSPFogPosition(gdl, ...) \
 	gD_(gdl, gsSPFogPosition, __VA_ARGS__)
 #define gSPForceMatrix(gdl, ...) \
@@ -3187,6 +3213,8 @@
 	gD_(gdl, gsSPLineW3D, __VA_ARGS__)
 #define gSPLoadUcode(gdl, ...) \
 	gD_(gdl, gsSPLoadUcode, __VA_ARGS__)
+#define gSPLoadUcodeL(gdl, ...) \
+	gD_(gdl, gsSPLoadUcodeL, __VA_ARGS__)
 #define gSPLookAtX(gdl, ...) \
 	gD_(gdl, gsSPLookAtX, __VA_ARGS__)
 #define gSPLookAtY(gdl, ...) \
@@ -3327,6 +3355,8 @@
 	gD_(gdl, gsTexRectFlip, __VA_ARGS__)
 #define gSPNoOp(gdl) \
 	gDisplayListPut(gdl, gsSPNoOp())
+#define gDPWord(gdl, ...) \
+	gD_(gdl, gsDPWord, __VA_ARGS__)
 #if defined(F3DEX_GBI_2)
 # define gSpecial3(gdl, ...) \
 	gD_(gdl, gsSpecial3, __VA_ARGS__)
