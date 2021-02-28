@@ -257,6 +257,7 @@ enum
 {
 	gfxd_endian_big,
 	gfxd_endian_little,
+	gfxd_endian_host,
 };
 
 enum

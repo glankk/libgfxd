@@ -171,9 +171,10 @@ zero is returned.
 Most argument callbacks have some extra parameters containing information that
 might be relevant to the argument that triggered the callback. The extra
 information is extracted only from the current macro, as gfxd does not retain
-any context information from previous or subsequent macros. If one of the extra
-parameter values is not available in the current macro, that parameters is
-substituted with `-1` for signed parameters, and zero for unsigned parameters.
+any context information from previous or subsequent macros. If any of the extra
+parameter values is not available in the current macro, the value for that
+parameter is substituted with `-1` for signed parameters, and zero for unsigned
+parameters.
 
 ---
 
@@ -289,9 +290,10 @@ before `gfxd_execute`, as no microcode is selected by default.
 
 ##### `void gfxd_endian(int endian, int wordsize)`
 Select `endian` as the endianness of the input, and `wordsize` as the size of
-each word in number of bytes. `endian` can be `gfxd_endian_big` or
-`gfxd_endian_little`. `wordsize` can be 1, 2, 4, or 8. Big endian is selected
-by default, with a word size of 4.
+each word in number of bytes. `endian` can be `gfxd_endian_big`,
+`gfxd_endian_little`, or `gfxd_endian_host` (the endianness of the host
+machine). `wordsize` can be 1, 2, 4, or 8. Big endian is selected by default,
+with a word size of 4.
 
 ---
 

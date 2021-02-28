@@ -51,12 +51,56 @@ static void swap_words(Gfx *gfx)
 
 	for (int i = 0; i < 8 / wordsize; i++)
 	{
-		for (int j = 0; j < wordsize; j++)
+		if (endian == gfxd_endian_host)
 		{
-			if (endian == gfxd_endian_little)
-				*pb++ = pw[wordsize - 1 - j];
-			else
-				*pb++ = pw[j];
+			switch (wordsize)
+			{
+				case 1:
+				{
+					uint8_t w = *(uint8_t *) pw;
+					*pb++ = w >> 0;
+					break;
+				}
+				case 2:
+				{
+					uint16_t w = *(uint16_t *) pw;
+					*pb++ = w >> 8;
+					*pb++ = w >> 0;
+					break;
+				}
+				case 4:
+				{
+					uint32_t w = *(uint32_t *) pw;
+					*pb++ = w >> 24;
+					*pb++ = w >> 16;
+					*pb++ = w >> 8;
+					*pb++ = w >> 0;
+					break;
+				}
+				case 8:
+				{
+					uint64_t w = *(uint64_t *) pw;
+					*pb++ = w >> 56;
+					*pb++ = w >> 48;
+					*pb++ = w >> 40;
+					*pb++ = w >> 32;
+					*pb++ = w >> 24;
+					*pb++ = w >> 16;
+					*pb++ = w >> 8;
+					*pb++ = w >> 0;
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < wordsize; j++)
+			{
+				if (endian == gfxd_endian_little)
+					*pb++ = pw[wordsize - 1 - j];
+				else
+					*pb++ = pw[j];
+			}
 		}
 		pw += wordsize;
 	}
