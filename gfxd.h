@@ -227,6 +227,7 @@ enum
 	gfxd_DisplayList,
 	gfxd_DPHalf1,
 	gfxd_DPHalf2,
+	gfxd_DPWord,
 	gfxd_DPLoadTile,
 	gfxd_SPGeometryMode,
 	gfxd_SPSetOtherModeLo,

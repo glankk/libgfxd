@@ -1578,7 +1578,7 @@ UCFUNC int d_SPMatrix(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 }
 #endif
 
-#if defined(F3D_GBI)
+#if defined(F3D_GBI) || (defined(F3D_BETA) && defined(F3DEX_GBI))
 UCFUNC int d_SPModifyVertex(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
 	m->id = gfxd_SPModifyVertex;
@@ -1588,9 +1588,9 @@ UCFUNC int d_SPModifyVertex(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	argu(2, "val", lo, gfxd_Word);
 	int ret = 0;
 	if (offset % 40 != G_MWO_POINT_RGBA
-		|| offset % 40 != G_MWO_POINT_ST
-		|| offset % 40 != G_MWO_POINT_XYSCREEN
-		|| offset % 40 != G_MWO_POINT_ZSCREEN)
+		&& offset % 40 != G_MWO_POINT_ST
+		&& offset % 40 != G_MWO_POINT_XYSCREEN
+		&& offset % 40 != G_MWO_POINT_ZSCREEN)
 	{
 		badarg(1);
 		ret = -1;
@@ -2061,6 +2061,20 @@ UCFUNC int d_DPHalf2(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
+UCFUNC int c_DPWord(gfxd_macro_t *m, int n_macro)
+{
+	if (n_macro < 2)
+		return -1;
+	if (m[0].id != gfxd_DPHalf1 || m[1].id != gfxd_DPHalf2)
+		return -1;
+	uint32_t wordhi = argvu(m[0], 0);
+	uint32_t wordlo = argvu(m[1], 0);
+	m->id = gfxd_DPWord;
+	argu(0, "wordhi", wordhi, gfxd_Word);
+	argu(1, "wordlo", wordlo, gfxd_Word);
+	return 0;
+}
+
 UCFUNC int d_DPLoadTile(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
 	m->id = gfxd_DPLoadTile;
@@ -2187,7 +2201,7 @@ UCFUNC int d_MoveWd(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		return d_SPSegment(m, hi, lo);
 	else if (index == G_MW_NUMLIGHT && offset == G_MWO_NUMLIGHT)
 		return d_SPNumLights(m, hi, lo);
-#if defined(F3D_GBI)
+#if defined(F3D_GBI) || (defined(F3D_BETA) && defined(F3DEX_GBI))
 	else if (index == G_MW_POINTS)
 		return d_SPModifyVertex(m, hi, lo);
 #endif

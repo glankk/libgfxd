@@ -1,5 +1,5 @@
 /**
- * gbi.h version 0.3.2
+ * gbi.h version 0.3.3
  * n64 graphics microcode interface library
  * compatible with fast3d, f3dex, f3dex2, s2dex, and s2dex2
  *
@@ -47,11 +47,12 @@
 # define G_MOVEMEM		0x03
 # define G_VTX			0x04
 # define G_DL			0x06
-# define G_RDPHALF_CONT		0xB2
-# define G_RDPHALF_2		0xB3
 # if defined(F3D_BETA)
+#  define G_RDPHALF_2		0xB2
+#  define G_RDPHALF_1		0xB3
 #  define G_PERSPNORM		0xB4
 # else
+#  define G_RDPHALF_2		0xB3
 #  define G_RDPHALF_1		0xB4
 # endif
 # define G_LINE3D		0xB5
@@ -73,7 +74,9 @@
 # define G_LOAD_UCODE		0xAF
 # define G_BRANCH_Z		0xB0
 # define G_TRI2			0xB1
-# define G_MODIFYVTX		0xB2
+# if !defined(F3D_BETA)
+#  define G_MODIFYVTX		0xB2
+# endif
 #endif
 
 /* commands for f3dex2 */
@@ -2605,6 +2608,12 @@
 #define gsSPNoOp() \
 	gO_(G_SPNOOP, 0, 0)
 
+#define gsDPHalf1(wordhi) \
+	gO_(G_RDPHALF_1, 0, wordhi)
+
+#define gsDPHalf2(wordlo) \
+	gO_(G_RDPHALF_2, 0, wordlo)
+
 #define gsDPWord(wordhi, wordlo) \
 	gsDPHalf1(wordhi), \
 	gsDPHalf2(wordlo)
@@ -2637,9 +2646,6 @@
 		gF_(gI_(v1) * 10, 8, 8) | \
 		gF_(wd, 8, 0))
 
-# define gsSPModifyVertex(vtx, where, val) \
-	gsMoveWd(G_MW_POINTS, (vtx) * 40 + (where), val)
-
 # define gsSPVertex(v, n, v0) \
 	gO_( \
 		G_VTX, \
@@ -2647,6 +2653,14 @@
 		gF_(v0, 4, 16) | \
 		gF_(sizeof(Vtx) * (n), 16, 0), \
 		v)
+
+#endif
+
+/* instruction macros for fast3d and beta f3dex */
+#if defined(F3D_GBI) || (defined(F3D_BETA) && defined(F3DEX_GBI))
+
+# define gsSPModifyVertex(vtx, where, val) \
+	gsMoveWd(G_MW_POINTS, (vtx) * 40 + (where), val)
 
 #endif
 
@@ -2806,12 +2820,14 @@
 		gI_(&ucode##TextStart) & 0x1FFFFFFF, \
 		gI_(&ucode##DataStart) & 0x1FFFFFFF)
 
-# define gsSPModifyVertex(vtx, where, val) \
+# if !(defined(F3D_BETA) && defined(F3DEX_GBI))
+#  define gsSPModifyVertex(vtx, where, val) \
 	gO_( \
 		G_MODIFYVTX, \
 		gF_(where, 8, 16) | \
 		gF_((vtx) * 2, 16, 0), \
 		val)
+# endif
 
 # define gsBranchZ(vtx, zval) \
 	gO_( \
@@ -2964,22 +2980,10 @@
 # define gsSPPerspNormalize(scale) \
 	gO_(G_PERSPNORM, 0, scale)
 
-# define gsDPHalf1(wordhi) \
-	gO_(G_RDPHALF_2, 0, wordhi)
-
-# define gsDPHalf2(wordlo) \
-	gO_(G_RDPHALF_CONT, 0, wordlo)
-
 #else
 
 # define gsSPPerspNormalize(scale) \
 	gsMoveWd(G_MW_PERSPNORM, 0, scale)
-
-# define gsDPHalf1(wordhi) \
-	gO_(G_RDPHALF_1, 0, wordhi)
-
-# define gsDPHalf2(wordlo) \
-	gO_(G_RDPHALF_2, 0, wordlo)
 
 #endif
 

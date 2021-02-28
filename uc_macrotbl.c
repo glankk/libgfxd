@@ -671,17 +671,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.disas_fn = d_SP1Quadrangle,
 	},
 #endif
-#if defined(F3D_BETA) && defined(F3DEX_GBI)
-	[gfxd_SPBranchLessZraw] =
-	{
-		.prefix = NULL,
-		.suffix = "SPBranchLessZraw",
-		.opcode = G_RDPHALF_2,
-		.n_gfx = 2,
-		.n_arg = 3,
-		.combine_fn = c_SPBranchLessZraw,
-	},
-#elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
+#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
 	[gfxd_SPBranchLessZraw] =
 	{
 		.prefix = NULL,
@@ -859,17 +849,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 4,
 		.disas_fn = d_SPLineW3D,
 	},
-#if defined(F3D_BETA) && defined(F3DEX_GBI)
-	[gfxd_SPLoadUcode] =
-	{
-		.prefix = NULL,
-		.suffix = "SPLoadUcode",
-		.opcode = G_RDPHALF_2,
-		.n_gfx = 2,
-		.n_arg = 2,
-		.combine_fn = c_SPLoadUcode,
-	},
-#elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
+#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
 	[gfxd_SPLoadUcode] =
 	{
 		.prefix = NULL,
@@ -916,7 +896,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 2,
 		.disas_fn = d_SPMatrix,
 	},
-#if defined(F3D_GBI)
+#if defined(F3D_GBI) || (defined(F3D_BETA) && defined(F3DEX_GBI))
 	[gfxd_SPModifyVertex] =
 	{
 		.prefix = NULL,
@@ -1170,26 +1150,6 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 2,
 		.disas_fn = d_DisplayList,
 	},
-#if defined(F3D_BETA) && (defined(F3D_GBI) || defined(F3DEX_GBI))
-	[gfxd_DPHalf1] =
-	{
-		.prefix = NULL,
-		.suffix = "DPHalf1",
-		.opcode = G_RDPHALF_2,
-		.n_gfx = 1,
-		.n_arg = 1,
-		.disas_fn = d_DPHalf1,
-	},
-	[gfxd_DPHalf2] =
-	{
-		.prefix = NULL,
-		.suffix = "DPHalf2",
-		.opcode = G_RDPHALF_CONT,
-		.n_gfx = 1,
-		.n_arg = 1,
-		.disas_fn = d_DPHalf2,
-	},
-#else
 	[gfxd_DPHalf1] =
 	{
 		.prefix = NULL,
@@ -1208,7 +1168,15 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 1,
 		.disas_fn = d_DPHalf2,
 	},
-#endif
+	[gfxd_DPWord] =
+	{
+		.prefix = NULL,
+		.suffix = "DPWord",
+		.opcode = G_RDPHALF_1,
+		.n_gfx = 2,
+		.n_arg = 2,
+		.combine_fn = c_DPWord,
+	},
 	[gfxd_DPLoadTile] =
 	{
 		.prefix = NULL,
@@ -1326,17 +1294,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.disas_fn = d_LoadUcode,
 	},
 #endif
-#if defined(F3D_BETA) && defined(F3DEX_GBI)
-	[gfxd_SPLoadUcodeEx] =
-	{
-		.prefix = NULL,
-		.suffix = "SPLoadUcodeEx",
-		.opcode = G_RDPHALF_2,
-		.n_gfx = 2,
-		.n_arg = 3,
-		.combine_fn = c_SPLoadUcodeEx,
-	},
-#elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
+#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
 	[gfxd_SPLoadUcodeEx] =
 	{
 		.prefix = NULL,
