@@ -347,6 +347,8 @@ void gfxd_endian(int endian, int wordsize);
 void gfxd_dynamic(const char *arg);
 void gfxd_enable(int cap);
 void gfxd_disable(int cap);
+void gfxd_udata_set(void *ptr);
+void *gfxd_udata_get(void);
 
 int gfxd_execute(void);
 

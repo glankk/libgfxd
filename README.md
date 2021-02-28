@@ -1,3 +1,8 @@
+## Installing
+Run `make` for a single-threaded build, or `make MT=y` for a multi-threaded
+build. Copy `libgfxd.a` to your lib directory, and `gfxd.h` to your include
+directory.
+
 ## Example usage
 Example source code:
 ```
@@ -311,6 +316,13 @@ Enabled by default.
 hexadecimal. Disabled by default.
 - `gfxd_emit_q_macro`: Print fixed-point conversion `q` macros for fixed-point
 values. Disabled by default.
+
+---
+
+##### `void gfxd_udata_set(void *ptr)`
+##### `void *gfxd_udata_get(void)`
+Set or get a generic pointer that can be used to pass user-defined data in and
+out of callback functions.
 
 ## Execution
 Decompilation is started using the `gfxd_execute` function. When gfxd is

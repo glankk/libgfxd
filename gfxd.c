@@ -8,7 +8,7 @@
 #include "gfxd.h"
 #include "priv.h"
 
-static struct gfxd_state state;
+static TLOCAL struct gfxd_state state;
 
 static int buffer_input_fn(void *buf, int count)
 {
@@ -125,7 +125,7 @@ static uint32_t typed_arg_u(int type, int idx)
 }
 
 
-struct gfxd_config config =
+TLOCAL struct gfxd_config config =
 {
 	.ucode = NULL,
 	.endian = gfxd_endian_big,
@@ -629,6 +629,16 @@ void gfxd_disable(int cap)
 	}
 }
 
+void gfxd_udata_set(void *ptr)
+{
+	config.udata = ptr;
+}
+
+void *gfxd_udata_get(void)
+{
+	return config.udata;
+}
+
 int gfxd_execute(void)
 {
 	state.macro_offset = 0;
@@ -709,7 +719,7 @@ const char *gfxd_macro_name(void)
 	}
 	else
 	{
-		static char buf[32];
+		static TLOCAL char buf[32];
 
 		char *p = buf;
 		if (t->prefix != NULL)

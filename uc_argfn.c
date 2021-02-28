@@ -474,7 +474,7 @@ struct rm_preset
 	const char *	name;
 };
 
-static struct rm_preset rm_presets[] =
+static const struct rm_preset rm_presets[] =
 {
 	{G_RM_OPA_SURF,		"G_RM_OPA_SURF"},
 	{G_RM_OPA_SURF2,	"G_RM_OPA_SURF2"},
@@ -568,7 +568,7 @@ static struct rm_preset rm_presets[] =
 	{G_RM_RA_SPRITE2,	"G_RM_RA_SPRITE2"},
 };
 
-static struct rm_preset bl1_presets[] =
+static const struct rm_preset bl1_presets[] =
 {
 	{G_RM_FOG_SHADE_A,	"G_RM_FOG_SHADE_A"},
 	{G_RM_FOG_PRIM_A,	"G_RM_FOG_PRIM_A"},
@@ -576,7 +576,7 @@ static struct rm_preset bl1_presets[] =
 	{G_RM_NOOP,		"G_RM_NOOP"},
 };
 
-static struct rm_preset bl2_presets[] =
+static const struct rm_preset bl2_presets[] =
 {
 	{G_RM_NOOP2,		"G_RM_NOOP2"},
 };
@@ -588,12 +588,12 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 	uint32_t rm_c2_mask = MDMASK_RM_C2;
 	uint32_t rm_mode_lo = MDMASK_RM_LO;
 	uint32_t rm_mask = rm_c1_mask | rm_c2_mask | rm_mode_lo;
-	struct rm_preset *pre_c1 = NULL;
-	struct rm_preset *pre_c2 = NULL;
+	const struct rm_preset *pre_c1 = NULL;
+	const struct rm_preset *pre_c2 = NULL;
 	int n_rm_presets = sizeof(rm_presets) / sizeof(*rm_presets);
 	for (int i = 0; i < n_rm_presets; i++)
 	{
-		struct rm_preset *pre = &rm_presets[i];
+		const struct rm_preset *pre = &rm_presets[i];
 		uint32_t pre_extra = pre->rm & ~rm_mask;
 		uint32_t rm_c1 = arg & (rm_c1_mask | rm_mode_lo | pre_extra);
 		if (!pre_c1 && rm_c1 == pre->rm)
@@ -607,7 +607,7 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 		int n_bl1_presets = sizeof(bl1_presets) / sizeof(*bl1_presets);
 		for (int i = 0; i < n_bl1_presets; i++)
 		{
-			struct rm_preset *pre = &bl1_presets[i];
+			const struct rm_preset *pre = &bl1_presets[i];
 			uint32_t pre_extra = pre->rm & ~rm_mask;
 			uint32_t rm_c1 = arg & (rm_c1_mask | pre_extra);
 			if (rm_c1 == pre->rm)
@@ -619,7 +619,7 @@ UCFUNC int othermodelo_str(uint32_t arg, uint32_t which)
 		int n_bl2_presets = sizeof(bl2_presets) / sizeof(*bl2_presets);
 		for (int i = 0; i < n_bl2_presets; i++)
 		{
-			struct rm_preset *pre = &bl2_presets[i];
+			const struct rm_preset *pre = &bl2_presets[i];
 			uint32_t pre_extra = pre->rm & ~rm_mask;
 			uint32_t rm_c2 = arg & (rm_c2_mask | pre_extra);
 			if (rm_c2 == pre->rm)
@@ -1303,7 +1303,7 @@ struct cc_preset
 		G_ACMUX_##Ac, G_ACMUX_##Ad \
 	}
 #define CC(m) CC_(m)
-static struct cc_preset cc_presets[] =
+static const struct cc_preset cc_presets[] =
 {
 	{CC(G_CC_MODULATEI),			"G_CC_MODULATEI"},
 	{CC(G_CC_MODULATEIA),			"G_CC_MODULATEIA"},

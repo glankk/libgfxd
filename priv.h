@@ -2,6 +2,12 @@
 #define GFXD_PRIV_H
 #include "gfxd.h"
 
+#ifdef CONFIG_MT
+# define TLOCAL _Thread_local
+#else
+# define TLOCAL
+#endif
+
 #define UCFUNC static inline
 
 #define config gfxd_config__
@@ -70,6 +76,7 @@ struct gfxd_config
 	int			endian;
 	int			wordsize;
 	const char *		arg;
+	void *			udata;
 
 	int			stop_on_invalid;
 	int			stop_on_end;
@@ -105,6 +112,6 @@ struct gfxd_config
 	gfxd_dram_fn_t *	dram_fn;
 };
 
-extern struct gfxd_config gfxd_config__;
+extern TLOCAL struct gfxd_config gfxd_config__;
 
 #endif

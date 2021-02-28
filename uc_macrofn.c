@@ -722,7 +722,7 @@ UCFUNC void cc_unpack(struct cc_mode *m0, struct cc_mode *m1, uint32_t hi,
 	m1->Ad = getfield(lo, 3, 0);
 }
 
-UCFUNC int cc_lookup(struct cc_mode *m)
+UCFUNC int cc_lookup(const struct cc_mode *m)
 {
 	struct cc_mode m_norm = *m;
 	if (m_norm.a > 0x7) m_norm.a = G_CCMUX_0;
@@ -733,7 +733,7 @@ UCFUNC int cc_lookup(struct cc_mode *m)
 	int n_presets = sizeof(cc_presets) / sizeof(*cc_presets);
 	for (int i = 0; i < n_presets; i++)
 	{
-		struct cc_mode *p = &cc_presets[i].mode;
+		const struct cc_mode *p = &cc_presets[i].mode;
 		if (m->a == p->a
 			&& m->b == p->b
 			&& m->c == p->c
