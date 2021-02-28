@@ -737,6 +737,15 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 0,
 		.disas_fn = d_SPEndDisplayList,
 	},
+	[gfxd_SPFogFactor] =
+	{
+		.prefix = NULL,
+		.suffix = "SPFogFactor",
+		.opcode = G_MOVEWORD,
+		.n_gfx = 1,
+		.n_arg = 2,
+		.alias = gfxd_SPFogPosition,
+	},
 	[gfxd_SPFogPosition] =
 	{
 		.prefix = NULL,

@@ -65,7 +65,8 @@ enum
 	gfxd_Dlflag,		/* display list flag */
 	gfxd_Cr,		/* clip ratio */
 	gfxd_Num,		/* element count */
-	gfxd_Fogz,		/* fog depth (0 - 1000) */
+	gfxd_Fogz,		/* fog factor */
+	gfxd_Fogp,		/* fog position (0 - 1000) */
 	gfxd_Mtxptr,		/* matrix pointer */
 	gfxd_Gm,		/* geometry mode */
 	gfxd_Mwo_matrix,	/* matrix moveword offset */
@@ -186,6 +187,7 @@ enum
 	gfxd_SPCullDisplayList,
 	gfxd_SPDisplayList,
 	gfxd_SPEndDisplayList,
+	gfxd_SPFogFactor,
 	gfxd_SPFogPosition,
 	gfxd_SPForceMatrix,
 	gfxd_SPSetGeometryMode,

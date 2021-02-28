@@ -287,6 +287,11 @@ static const gfxd_arg_type_t arg_tbl[] =
 		.fmt = gfxd_argfmt_i,
 		.fn = argfn_i,
 	},
+	[gfxd_Fogp] =
+	{
+		.fmt = gfxd_argfmt_i,
+		.fn = argfn_i,
+	},
 	[gfxd_Mtxptr] =
 	{
 		.fmt = gfxd_argfmt_u,

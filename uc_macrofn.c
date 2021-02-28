@@ -1257,32 +1257,40 @@ UCFUNC int d_SPEndDisplayList(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
+UCFUNC int d_SPFogFactor(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
+{
+	m->id = gfxd_SPFogFactor;
+	argi(0, "fm", sx(getfield(lo, 16, 16), 16), gfxd_Fogz);
+	argi(1, "fo", sx(getfield(lo, 16, 0), 16), gfxd_Fogz);
+	return 0;
+}
+
 UCFUNC int d_SPFogPosition(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
-	m->id = gfxd_SPFogPosition;
 	int x = sx(getfield(lo, 16, 16), 16);
 	int y = sx(getfield(lo, 16, 0), 16);
 	if (x == 0)
-	{
-		argi(0, "min", 0, gfxd_Fogz);
-		argi(1, "max", 0, gfxd_Fogz);
-		badarg(0);
-		badarg(1);
-		return -1;
-	}
+		return d_SPFogFactor(m, hi, lo);
 	else
 	{
-		x = 128000 / x;
-		int yx = y * x;
-		if (yx > 0)
-			yx += 255;
-		else if (yx < 0)
-			yx -= 255;
-		int min = 500 - yx / 256;
-		int max = x + min;
-		argi(0, "min", min, gfxd_Fogz);
-		argi(1, "max", max, gfxd_Fogz);
-		return 0;
+		int d = 128000 / x;
+		int yd = y * d;
+		if (yd > 0)
+			yd += 255;
+		else if (yd < 0)
+			yd -= 255;
+		int min = 500 - yd / 256;
+		int max = d + min;
+
+		if (min >= 0 && min <= 1000 && max >= 0 && max <= 1000)
+		{
+			m->id = gfxd_SPFogPosition;
+			argi(0, "min", min, gfxd_Fogp);
+			argi(1, "max", max, gfxd_Fogp);
+			return 0;
+		}
+		else
+			return d_SPFogFactor(m, hi, lo);
 	}
 }
 
