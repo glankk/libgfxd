@@ -180,6 +180,7 @@ TLOCAL struct gfxd_config config =
 	.stop_on_end = 1,
 	.emit_dec_color = 0,
 	.emit_q_macro = 0,
+	.emit_ext_macro = 0,
 
 	.input_buf = NULL,
 	.input_buf_size = 0,
@@ -648,6 +649,10 @@ void gfxd_enable(int cap)
 		case gfxd_emit_q_macro:
 			config.emit_q_macro = 1;
 			break;
+
+		case gfxd_emit_ext_macro:
+			config.emit_ext_macro = 1;
+			break;
 	}
 }
 
@@ -669,6 +674,10 @@ void gfxd_disable(int cap)
 
 		case gfxd_emit_q_macro:
 			config.emit_q_macro = 0;
+			break;
+
+		case gfxd_emit_ext_macro:
+			config.emit_ext_macro = 0;
 			break;
 	}
 }
@@ -699,6 +708,16 @@ int gfxd_execute(void)
 
 		gfxd_macro_t *m = &state.macro[0];
 		config.ucode->combine_fn(m, state.n_gfx);
+
+		const gfxd_macro_type_t *t = &config.ucode->macro_tbl[m->id];
+		if (t->ext != 0 && config.emit_ext_macro == 0)
+		{
+			Gfx gfx = state.gfx[0];
+			swap_words(&gfx);
+
+			t = &config.ucode->macro_tbl[gfxd_Invalid];
+			t->disas_fn(m, gfx.hi, gfx.lo);
+		}
 
 		int ret = config.macro_fn();
 		if (ret != 0)

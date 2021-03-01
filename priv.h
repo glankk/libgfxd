@@ -47,6 +47,7 @@ typedef struct
 	gfxd_disas_fn_t *	disas_fn;
 	gfxd_combine_fn_t *	combine_fn;
 	int			alias;
+	int			ext;
 } gfxd_macro_type_t;
 
 struct gfxd_ucode
@@ -82,6 +83,7 @@ struct gfxd_config
 	int			stop_on_end;
 	int			emit_dec_color;
 	int			emit_q_macro;
+	int			emit_ext_macro;
 
 	const char *		input_buf;
 	int			input_buf_size;

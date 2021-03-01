@@ -1674,7 +1674,7 @@ UCFUNC int d_SPSegment(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	argu(0, "seg", offset / 4, gfxd_Seg);
 	argu(1, "base", lo, gfxd_Segptr);
 	int ret = 0;
-	if (offset % 4 != 0 || offset > G_MWO_SEGMENT_F)
+	if (offset % 4 != 0)
 	{
 		badarg(0);
 		ret = -1;
@@ -2043,7 +2043,7 @@ UCFUNC int d_DisplayList(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		m->id = gfxd_DisplayList;
 		argu(0, "dl", lo, gfxd_Dl);
 		argi(1, "flag", flag, gfxd_Dlflag);
-		return -1;
+		return 0;
 	}
 }
 
@@ -2107,6 +2107,29 @@ UCFUNC int d_SPGeometryMode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 }
 #endif
 
+UCFUNC int d_SPSetOtherMode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
+{
+	m->id = gfxd_SPSetOtherMode;
+	int opc = getfield(hi, 8, 24);
+#if defined(F3D_GBI) || defined(F3DEX_GBI)
+	int length = getfield(hi, 8, 0);
+	int shift = getfield(hi, 8, 8);
+#elif defined(F3DEX_GBI_2)
+	int length = getfield(hi, 8, 0) + 1;
+	int shift = 32 - (getfield(hi, 8, 8) + length);
+#endif
+	argi(0, "opc", opc, gfxd_Opcode);
+	argi(1, "sft", shift, gfxd_Sftlo);
+	argi(2, "len", length, gfxd_Num);
+	if (opc == G_SETOTHERMODE_H)
+		argu(3, "mode", lo, gfxd_Othermodehi);
+	else if (opc == G_SETOTHERMODE_L)
+		argu(3, "mode", lo, gfxd_Othermodelo);
+	else
+		argu(3, "mode", lo, gfxd_Word);
+	return 0;
+}
+
 UCFUNC int d_SPSetOtherModeLo(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
@@ -2122,14 +2145,16 @@ UCFUNC int d_SPSetOtherModeLo(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		return d_DPSetDepthSource(m, hi, lo);
 	else if (shift == G_MDSFT_RENDERMODE && length == G_MDSIZ_RENDERMODE)
 		return d_DPSetRenderMode(m, hi, lo);
-	else
+	else if (config.emit_ext_macro)
 	{
 		m->id = gfxd_SPSetOtherModeLo;
 		argi(0, "sft", shift, gfxd_Sftlo);
 		argi(1, "len", length, gfxd_Num);
 		argu(2, "mode", lo, gfxd_Othermodelo);
-		return -1;
+		return 0;
 	}
+	else
+		return d_SPSetOtherMode(m, hi, lo);
 }
 
 UCFUNC int d_SPSetOtherModeHi(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
@@ -2163,15 +2188,16 @@ UCFUNC int d_SPSetOtherModeHi(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		return d_DPSetCycleType(m, hi, lo);
 	else if (shift == G_MDSFT_PIPELINE && length == G_MDSIZ_PIPELINE)
 		return d_DPPipelineMode(m, hi, lo);
-	else
+	else if (config.emit_ext_macro)
 	{
 		m->id = gfxd_SPSetOtherModeHi;
 		argi(0, "sft", shift, gfxd_Sfthi);
 		argi(1, "len", length, gfxd_Num);
 		argu(2, "mode", lo, gfxd_Othermodehi);
-		return -1;
+		return 0;
 	}
-	return 0;
+	else
+		return d_SPSetOtherMode(m, hi, lo);
 }
 
 UCFUNC int d_DPSetOtherMode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
@@ -2314,7 +2340,7 @@ UCFUNC int d_SPDma_io(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		argu(1, "dmem", getfield(hi, 10, 13) * 8, gfxd_Dmem);
 		argu(2, "dram", lo, gfxd_Dram);
 		argu(3, "size", getfield(hi, 12, 10) + 1, gfxd_Size);
-		return -1;
+		return 0;
 	}
 }
 

@@ -318,6 +318,12 @@ Enabled by default.
 hexadecimal. Disabled by default.
 - `gfxd_emit_q_macro`: Print fixed-point conversion `q` macros for fixed-point
 values. Disabled by default.
+- `gfxd_emit_ext_macro`: Emit non-standard macros. Some commands are valid
+(though possibly meaningless), but have no macros associated with them, such as
+a standalone `G_RDPHALF_1`. When this feature is enabled, such a command will
+produce a non-standard `gsDPHalf1` macro instead of a raw hexadecimal command.
+Also enables some non-standard multi-packet texture loading macros. Disabled by
+default.
 
 ---
 

@@ -80,6 +80,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 14,
 		.combine_fn = c_DPLoadMultiBlockYuvS,
+		.ext = 1,
 	},
 	[gfxd_DPLoadMultiBlockYuv] =
 	{
@@ -89,6 +90,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 14,
 		.combine_fn = c_DPLoadMultiBlockYuv,
+		.ext = 1,
 	},
 	[gfxd_DPLoadMultiBlock_4bS] =
 	{
@@ -134,6 +136,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 13,
 		.combine_fn = c__DPLoadTextureBlockYuvS,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureBlockYuv] =
 	{
@@ -143,6 +146,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 13,
 		.combine_fn = c__DPLoadTextureBlockYuv,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureBlock_4bS] =
 	{
@@ -152,6 +156,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 12,
 		.combine_fn = c__DPLoadTextureBlock_4bS,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureBlock_4b] =
 	{
@@ -170,6 +175,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 13,
 		.combine_fn = c__DPLoadTextureBlockS,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureBlock] =
 	{
@@ -188,6 +194,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 12,
 		.combine_fn = c_DPLoadTextureBlockYuvS,
+		.ext = 1,
 	},
 	[gfxd_DPLoadTextureBlockYuv] =
 	{
@@ -197,6 +204,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 12,
 		.combine_fn = c_DPLoadTextureBlockYuv,
+		.ext = 1,
 	},
 	[gfxd_DPLoadTextureBlock_4bS] =
 	{
@@ -242,6 +250,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 18,
 		.combine_fn = c_DPLoadMultiTileYuv,
+		.ext = 1,
 	},
 	[gfxd_DPLoadMultiTile_4b] =
 	{
@@ -269,6 +278,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 17,
 		.combine_fn = c__DPLoadTextureTileYuv,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureTile_4b] =
 	{
@@ -278,6 +288,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 16,
 		.combine_fn = c__DPLoadTextureTile_4b,
+		.ext = 1,
 	},
 	[gfxd__DPLoadTextureTile] =
 	{
@@ -287,6 +298,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 17,
 		.combine_fn = c__DPLoadTextureTile,
+		.ext = 1,
 	},
 	[gfxd_DPLoadTextureTileYuv] =
 	{
@@ -296,6 +308,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 7,
 		.n_arg = 16,
 		.combine_fn = c_DPLoadTextureTileYuv,
+		.ext = 1,
 	},
 	[gfxd_DPLoadTextureTile_4b] =
 	{
@@ -1139,6 +1152,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 2,
 		.disas_fn = d_BranchZ,
+		.ext = 1,
 	},
 #endif
 	[gfxd_DisplayList] =
@@ -1149,6 +1163,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 2,
 		.disas_fn = d_DisplayList,
+		.ext = 1,
 	},
 	[gfxd_DPHalf1] =
 	{
@@ -1158,6 +1173,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 1,
 		.disas_fn = d_DPHalf1,
+		.ext = 1,
 	},
 	[gfxd_DPHalf2] =
 	{
@@ -1167,6 +1183,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 1,
 		.disas_fn = d_DPHalf2,
+		.ext = 1,
 	},
 	[gfxd_DPWord] =
 	{
@@ -1197,6 +1214,15 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.disas_fn = d_SPGeometryMode,
 	},
 #endif
+	[gfxd_SPSetOtherMode] =
+	{
+		.prefix = NULL,
+		.suffix = "SPSetOtherMode",
+		.opcode = -1,
+		.n_gfx = 1,
+		.n_arg = 4,
+		.disas_fn = d_SPSetOtherMode,
+	},
 	[gfxd_SPSetOtherModeLo] =
 	{
 		.prefix = NULL,
@@ -1205,6 +1231,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 3,
 		.disas_fn = d_SPSetOtherModeLo,
+		.ext = 1,
 	},
 	[gfxd_SPSetOtherModeHi] =
 	{
@@ -1214,6 +1241,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 3,
 		.disas_fn = d_SPSetOtherModeHi,
+		.ext = 1,
 	},
 	[gfxd_DPSetOtherMode] =
 	{
@@ -1242,6 +1270,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 3,
 		.disas_fn = d_MoveMem,
+		.ext = 1,
 	},
 #elif defined(F3DEX_GBI_2)
 	[gfxd_MoveMem] =
@@ -1252,6 +1281,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 4,
 		.disas_fn = d_MoveMem,
+		.ext = 1,
 	},
 #endif
 #if defined(F3DEX_GBI_2)
@@ -1293,8 +1323,6 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_arg = 2,
 		.disas_fn = d_LoadUcode,
 	},
-#endif
-#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
 	[gfxd_SPLoadUcodeEx] =
 	{
 		.prefix = NULL,
@@ -1313,6 +1341,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 5,
 		.disas_fn = d_TexRect,
+		.ext = 1,
 	},
 	[gfxd_TexRectFlip] =
 	{
@@ -1322,6 +1351,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 5,
 		.disas_fn = d_TexRectFlip,
+		.ext = 1,
 	},
 	[gfxd_SPNoOp] =
 	{
@@ -1341,6 +1371,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 2,
 		.disas_fn = d_Special3,
+		.ext = 1,
 	},
 	[gfxd_Special2] =
 	{
@@ -1350,6 +1381,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 2,
 		.disas_fn = d_Special2,
+		.ext = 1,
 	},
 	[gfxd_Special1] =
 	{
@@ -1359,6 +1391,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 1,
 		.n_arg = 2,
 		.disas_fn = d_Special1,
+		.ext = 1,
 	},
 #endif
 };

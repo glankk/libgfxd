@@ -5,6 +5,11 @@ static const gfxd_arg_type_t arg_tbl[] =
 		.fmt = gfxd_argfmt_u,
 		.fn = argfn_x32,
 	},
+	[gfxd_Opcode] =
+	{
+		.fmt = gfxd_argfmt_i,
+		.fn = argfn_opc,
+	},
 	[gfxd_Coordi] =
 	{
 		.fmt = gfxd_argfmt_u,

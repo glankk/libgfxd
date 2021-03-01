@@ -31,7 +31,9 @@ UCFUNC int combine(gfxd_macro_t *m, int num)
 	for (int i = 0; i < sizeof(macro_tbl) / sizeof(macro_tbl[0]); i++)
 	{
 		const gfxd_macro_type_t *t = &macro_tbl[i];
-		if (t->combine_fn != NULL && t->opcode == opcode)
+		if (t->combine_fn != NULL
+			&& t->opcode == opcode
+			&& (t->ext == 0 || config.emit_ext_macro != 0))
 		{
 			if (t->combine_fn(m, num) == 0)
 				return 0;

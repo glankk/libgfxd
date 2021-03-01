@@ -126,6 +126,139 @@ UCFUNC int argfn_qs1616(const gfxd_value_t *v)
 	}
 }
 
+UCFUNC int argfn_opc(const gfxd_value_t *v)
+{
+	switch (v->i)
+	{
+		case G_SPNOOP:
+			return gfxd_puts("G_SPNOOP");
+		case G_MTX:
+			return gfxd_puts("G_MTX");
+		case G_MOVEMEM:
+			return gfxd_puts("G_MOVEMEM");
+		case G_VTX:
+			return gfxd_puts("G_VTX");
+		case G_DL:
+			return gfxd_puts("G_DL");
+		case G_RDPHALF_2:
+			return gfxd_puts("G_RDPHALF_2");
+		case G_RDPHALF_1:
+			return gfxd_puts("G_RDPHALF_1");
+#if defined(F3D_BETA) && (defined(F3D_GBI) || defined(F3DEX_GBI))
+		case G_PERSPNORM:
+			return gfxd_puts("G_PERSPNORM");
+#endif
+		case G_LINE3D:
+			return gfxd_puts("G_LINE3D");
+#if defined(F3D_GBI) || defined(F3DEX_GBI)
+		case G_CLEARGEOMETRYMODE:
+			return gfxd_puts("G_CLEARGEOMETRYMODE");
+		case G_SETGEOMETRYMODE:
+			return gfxd_puts("G_SETGEOMETRYMODE");
+#endif
+		case G_ENDDL:
+			return gfxd_puts("G_ENDDL");
+		case G_SETOTHERMODE_L:
+			return gfxd_puts("G_SETOTHERMODE_L");
+		case G_SETOTHERMODE_H:
+			return gfxd_puts("G_SETOTHERMODE_H");
+		case G_TEXTURE:
+			return gfxd_puts("G_TEXTURE");
+		case G_MOVEWORD:
+			return gfxd_puts("G_MOVEWORD");
+		case G_POPMTX:
+			return gfxd_puts("G_POPMTX");
+		case G_CULLDL:
+			return gfxd_puts("G_CULLDL");
+		case G_TRI1:
+			return gfxd_puts("G_TRI1");
+		case G_NOOP:
+			return gfxd_puts("G_NOOP");
+#if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
+		case G_LOAD_UCODE:
+			return gfxd_puts("G_LOAD_UCODE");
+		case G_BRANCH_Z:
+			return gfxd_puts("G_BRANCH_Z");
+		case G_TRI2:
+			return gfxd_puts("G_TRI2");
+# if !(defined(F3D_BETA) && defined(F3DEX_GBI))
+		case G_MODIFYVTX:
+			return gfxd_puts("G_MODIFYVTX");
+# endif
+#endif
+#if defined(F3DEX_GBI_2)
+		case G_QUAD:
+			return gfxd_puts("G_QUAD");
+		case G_SPECIAL_3:
+			return gfxd_puts("G_SPECIAL_3");
+		case G_SPECIAL_2:
+			return gfxd_puts("G_SPECIAL_2");
+		case G_SPECIAL_1:
+			return gfxd_puts("G_SPECIAL_1");
+		case G_DMA_IO:
+			return gfxd_puts("G_DMA_IO");
+		case G_GEOMETRYMODE:
+			return gfxd_puts("G_GEOMETRYMODE");
+#endif
+		case G_TEXRECT:
+			return gfxd_puts("G_TEXRECT");
+		case G_TEXRECTFLIP:
+			return gfxd_puts("G_TEXRECTFLIP");
+		case G_RDPLOADSYNC:
+			return gfxd_puts("G_RDPLOADSYNC");
+		case G_RDPPIPESYNC:
+			return gfxd_puts("G_RDPPIPESYNC");
+		case G_RDPTILESYNC:
+			return gfxd_puts("G_RDPTILESYNC");
+		case G_RDPFULLSYNC:
+			return gfxd_puts("G_RDPFULLSYNC");
+		case G_SETKEYGB:
+			return gfxd_puts("G_SETKEYGB");
+		case G_SETKEYR:
+			return gfxd_puts("G_SETKEYR");
+		case G_SETCONVERT:
+			return gfxd_puts("G_SETCONVERT");
+		case G_SETSCISSOR:
+			return gfxd_puts("G_SETSCISSOR");
+		case G_SETPRIMDEPTH:
+			return gfxd_puts("G_SETPRIMDEPTH");
+		case G_RDPSETOTHERMODE:
+			return gfxd_puts("G_RDPSETOTHERMODE");
+		case G_LOADTLUT:
+			return gfxd_puts("G_LOADTLUT");
+		case G_SETTILESIZE:
+			return gfxd_puts("G_SETTILESIZE");
+		case G_LOADBLOCK:
+			return gfxd_puts("G_LOADBLOCK");
+		case G_LOADTILE:
+			return gfxd_puts("G_LOADTILE");
+		case G_SETTILE:
+			return gfxd_puts("G_SETTILE");
+		case G_FILLRECT:
+			return gfxd_puts("G_FILLRECT");
+		case G_SETFILLCOLOR:
+			return gfxd_puts("G_SETFILLCOLOR");
+		case G_SETFOGCOLOR:
+			return gfxd_puts("G_SETFOGCOLOR");
+		case G_SETBLENDCOLOR:
+			return gfxd_puts("G_SETBLENDCOLOR");
+		case G_SETPRIMCOLOR:
+			return gfxd_puts("G_SETPRIMCOLOR");
+		case G_SETENVCOLOR:
+			return gfxd_puts("G_SETENVCOLOR");
+		case G_SETCOMBINE:
+			return gfxd_puts("G_SETCOMBINE");
+		case G_SETTIMG:
+			return gfxd_puts("G_SETTIMG");
+		case G_SETZIMG:
+			return gfxd_puts("G_SETZIMG");
+		case G_SETCIMG:
+			return gfxd_puts("G_SETCIMG");
+		default:
+			return gfxd_printf("0x%02" PRIX32, (uint32_t)v->i);
+	}
+}
+
 UCFUNC int argfn_fmt(const gfxd_value_t *v)
 {
 	switch (v->i)

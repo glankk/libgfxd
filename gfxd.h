@@ -10,6 +10,7 @@ extern "C"
 enum
 {
 	gfxd_Word,		/* generic word */
+	gfxd_Opcode,		/* command opcode (G_*) */
 	gfxd_Coordi,		/* integer coordinate */
 	gfxd_Coordq,		/* fractional (q10.2) coordinate */
 	gfxd_Pal,		/* palette index */
@@ -230,6 +231,7 @@ enum
 	gfxd_DPWord,
 	gfxd_DPLoadTile,
 	gfxd_SPGeometryMode,
+	gfxd_SPSetOtherMode,
 	gfxd_SPSetOtherModeLo,
 	gfxd_SPSetOtherModeHi,
 	gfxd_DPSetOtherMode,
@@ -254,6 +256,7 @@ enum
 	gfxd_stop_on_end,
 	gfxd_emit_dec_color,
 	gfxd_emit_q_macro,
+	gfxd_emit_ext_macro,
 };
 
 enum
