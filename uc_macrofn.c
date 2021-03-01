@@ -1586,16 +1586,7 @@ UCFUNC int d_SPModifyVertex(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	argi(0, "vtx", offset / 40, gfxd_Vtx);
 	argu(1, "where", offset % 40, gfxd_Mwo_point);
 	argu(2, "val", lo, gfxd_Word);
-	int ret = 0;
-	if (offset % 40 != G_MWO_POINT_RGBA
-		&& offset % 40 != G_MWO_POINT_ST
-		&& offset % 40 != G_MWO_POINT_XYSCREEN
-		&& offset % 40 != G_MWO_POINT_ZSCREEN)
-	{
-		badarg(1);
-		ret = -1;
-	}
-	return ret;
+	return 0;
 }
 #elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
 UCFUNC int d_SPModifyVertex(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
