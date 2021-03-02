@@ -452,6 +452,8 @@ UCFUNC int argfn_sftlo(const gfxd_value_t *v)
 			return gfxd_puts("G_MDSFT_ZSRCSEL");
 		case G_MDSFT_RENDERMODE:
 			return gfxd_puts("G_MDSFT_RENDERMODE");
+		case G_MDSFT_BLENDER:
+			return gfxd_puts("G_MDSFT_BLENDER");
 		default:
 			return gfxd_printf("%" PRIi32, v->i);
 	}
