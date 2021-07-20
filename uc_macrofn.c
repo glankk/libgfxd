@@ -1467,7 +1467,29 @@ UCFUNC int d_SPLine3D(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	}
 	return ret;
 }
-#elif defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
+#elif defined(F3DEX_GBI)
+UCFUNC int d_SPLine3D(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
+{
+	m->id = gfxd_SPLine3D;
+	int n0 = getfield(lo, 8, 16);
+	int n1 = getfield(lo, 8, 8);
+	argi(m, 0, "v0", n0 / 2, gfxd_Vtx);
+	argi(m, 1, "v1", n1 / 2, gfxd_Vtx);
+	argi(m, 2, "flag", 0, gfxd_Vtxflag);
+	int ret = 0;
+	if (n0 % 2 != 0)
+	{
+		badarg(m, 0);
+		ret = -1;
+	}
+	if (n1 % 2 != 0)
+	{
+		badarg(m, 1);
+		ret = -1;
+	}
+	return ret;
+}
+#elif defined(F3DEX_GBI_2)
 UCFUNC int d_SPLine3D(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
 	m->id = gfxd_SPLine3D;
