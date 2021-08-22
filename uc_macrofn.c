@@ -2077,7 +2077,7 @@ UCFUNC int d_BranchZ(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	int nb = getfield(hi, 12, 0);
 	int32_t zval;
 	if (lo > 0x7FFFFFFF)
-		zval = -0x80000000 + (int32_t)(lo & 0x7FFFFFFF);
+		zval = INT32_MIN + (int32_t)(lo & 0x7FFFFFFF);
 	else
 		zval = lo;
 	argi(m, 0, "vtx", nb / 2, gfxd_Vtx);
