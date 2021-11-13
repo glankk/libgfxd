@@ -794,6 +794,7 @@ static const gfxd_macro_type_t macro_tbl[] =
 		.n_gfx = 2,
 		.n_arg = 1,
 		.combine_fn = c_SPLoadGeometryMode,
+		.ext = 1,
 	},
 #elif defined(F3DEX_GBI_2)
 	[gfxd_SPForceMatrix] =
