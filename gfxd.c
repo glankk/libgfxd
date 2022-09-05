@@ -305,7 +305,7 @@ int gfxd_print_value(int type, const gfxd_value_t *value)
 
 int gfxd_macro_dflt(void)
 {
-	gfxd_macro_t *m = &state.macro[0];
+	gfxd_macro_t *m = &state.cur_macro;
 	const gfxd_macro_type_t *t = &config.ucode->macro_tbl[m->id];
 
 	const char *name = gfxd_macro_name();
@@ -544,7 +544,7 @@ void gfxd_arg_dflt(int arg_num)
 {
 	if (gfxd_arg_callbacks(arg_num) == 0)
 	{
-		gfxd_arg_t *a = &state.macro[0].arg[arg_num];
+		gfxd_arg_t *a = &state.cur_macro.arg[arg_num];
 
 		gfxd_print_value(a->type, &a->value);
 	}
@@ -712,8 +712,10 @@ int gfxd_execute(void)
 		if (state.n_gfx == 0)
 			break;
 
-		gfxd_macro_t *m = &state.macro[0];
-		config.ucode->combine_fn(m, state.n_gfx);
+		gfxd_macro_t *m = &state.cur_macro;
+
+		*m = state.macro[0];
+		config.ucode->combine_fn(m, state.macro, state.n_gfx);
 
 		const gfxd_macro_type_t *t = &config.ucode->macro_tbl[m->id];
 		if (t->ext != 0 && config.emit_ext_macro == 0)
@@ -764,7 +766,7 @@ int gfxd_macro_offset(void)
 
 int gfxd_macro_packets(void)
 {
-	return config.ucode->macro_tbl[state.macro[0].id].n_gfx;
+	return config.ucode->macro_tbl[state.cur_macro.id].n_gfx;
 }
 
 const void *gfxd_macro_data(void)
@@ -774,12 +776,12 @@ const void *gfxd_macro_data(void)
 
 int gfxd_macro_id(void)
 {
-	return state.macro[0].id;
+	return state.cur_macro.id;
 }
 
 const char *gfxd_macro_name(void)
 {
-	int id = state.macro[0].id;
+	int id = state.cur_macro.id;
 	const gfxd_macro_type_t *t = &config.ucode->macro_tbl[id];
 
 	if (t->prefix == NULL && t->suffix == NULL)
@@ -814,32 +816,32 @@ const char *gfxd_macro_name(void)
 
 int gfxd_arg_count(void)
 {
-	return config.ucode->macro_tbl[state.macro[0].id].n_arg;
+	return config.ucode->macro_tbl[state.cur_macro.id].n_arg;
 }
 
 int gfxd_arg_type(int arg_num)
 {
-	return state.macro[0].arg[arg_num].type;
+	return state.cur_macro.arg[arg_num].type;
 }
 
 const char *gfxd_arg_name(int arg_num)
 {
-	return state.macro[0].arg[arg_num].name;
+	return state.cur_macro.arg[arg_num].name;
 }
 
 int gfxd_arg_fmt(int arg_num)
 {
-	return config.ucode->arg_tbl[state.macro[0].arg[arg_num].type].fmt;
+	return config.ucode->arg_tbl[state.cur_macro.arg[arg_num].type].fmt;
 }
 
 const gfxd_value_t *gfxd_arg_value(int arg_num)
 {
-	return &state.macro[0].arg[arg_num].value;
+	return &state.cur_macro.arg[arg_num].value;
 }
 
 const gfxd_value_t *gfxd_value_by_type(int type, int idx)
 {
-	gfxd_macro_t *m = &state.macro[0];
+	gfxd_macro_t *m = &state.cur_macro;
 	const gfxd_macro_type_t *t = &config.ucode->macro_tbl[m->id];
 
 	for (int i = 0; i < t->n_arg; i++)
@@ -859,5 +861,39 @@ const gfxd_value_t *gfxd_value_by_type(int type, int idx)
 
 int gfxd_arg_valid(int arg_num)
 {
-	return state.macro[0].arg[arg_num].bad == 0;
+	return state.cur_macro.arg[arg_num].bad == 0;
+}
+
+int gfxd_foreach_pkt(int (*fn)(void))
+{
+	if (fn == NULL)
+		return 0;
+
+	int n_pkt = gfxd_macro_packets();
+	gfxd_macro_t m_save = state.cur_macro; /* save current macro */
+	int ret = 0;
+
+	for (int i = 0; i < n_pkt; i++)
+	{
+		gfxd_macro_t *m = &state.macro[i];
+
+		const gfxd_macro_type_t *t = &config.ucode->macro_tbl[m->id];
+		if (t->ext != 0 && config.emit_ext_macro == 0)
+		{
+			Gfx gfx = state.gfx[0];
+			swap_words(&gfx);
+
+			t = &config.ucode->macro_tbl[gfxd_Invalid];
+			t->disas_fn(m, gfx.hi, gfx.lo);
+		}
+
+		/* set as current macro for the duration of the callback */
+		state.cur_macro = *m;
+
+		ret = fn();
+		if (ret != 0)
+			break;
+	}
+	state.cur_macro = m_save; /* restore current macro */
+	return ret;
 }

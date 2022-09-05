@@ -39,7 +39,8 @@ typedef struct
 } gfxd_macro_t;
 
 typedef int gfxd_disas_fn_t(gfxd_macro_t *macro, uint32_t hi, uint32_t lo);
-typedef int gfxd_combine_fn_t(gfxd_macro_t *macro, int n_macro);
+typedef int gfxd_combine_fn_t(gfxd_macro_t *macro, gfxd_macro_t *macro_list,
+			      int n_macro);
 
 typedef struct
 {
@@ -69,6 +70,7 @@ struct gfxd_state
 	Gfx			gfx[9];
 	int			n_byte;
 	int			n_gfx;
+	gfxd_macro_t		cur_macro;
 	gfxd_macro_t		macro[9];
 
 	int			end_input;

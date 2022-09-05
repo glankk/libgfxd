@@ -361,6 +361,7 @@ int gfxd_execute(void);
 
 int gfxd_macro_offset(void);
 int gfxd_macro_packets(void);
+int gfxd_foreach_pkt(int (*fn)(void));
 const void *gfxd_macro_data(void);
 int gfxd_macro_id(void);
 const char *gfxd_macro_name(void);
