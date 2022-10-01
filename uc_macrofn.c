@@ -103,47 +103,48 @@ UCFUNC int d_DPPipeSync(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_DPLoadTLUT_pal16(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTLUT_pal16(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 6)
 		return -1;
-	if (m[0].id != gfxd_DPSetTextureImage
-		|| argvi(&m[0], 0) != G_IM_FMT_RGBA
-		|| argvi(&m[0], 1) != G_IM_SIZ_16b
-		|| argvi(&m[0], 2) != 1)
+	if (m_list[0].id != gfxd_DPSetTextureImage
+		|| argvi(&m_list[0], 0) != G_IM_FMT_RGBA
+		|| argvi(&m_list[0], 1) != G_IM_SIZ_16b
+		|| argvi(&m_list[0], 2) != 1)
 	{
 		return -1;
 	}
-	uint32_t dram = argvu(&m[0], 3);
-	if (m[1].id != gfxd_DPTileSync)
+	uint32_t dram = argvu(&m_list[0], 3);
+	if (m_list[1].id != gfxd_DPTileSync)
 		return -1;
-	if (m[2].id != gfxd_DPSetTile
-		|| argvi(&m[2], 0) != 0
-		|| argvi(&m[2], 1) != 0
-		|| argvi(&m[2], 2) != 0
-		|| argvu(&m[2], 3) < 0x100
-		|| argvu(&m[2], 3) % 0x10 != 0
-		|| argvi(&m[2], 4) != G_TX_LOADTILE
-		|| argvi(&m[2], 5) != 0
-		|| argvu(&m[2], 6) != 0
-		|| argvi(&m[2], 7) != 0
-		|| argvi(&m[2], 8) != 0
-		|| argvu(&m[2], 9) != 0
-		|| argvi(&m[2], 10) != 0
-		|| argvi(&m[2], 11) != 0)
+	if (m_list[2].id != gfxd_DPSetTile
+		|| argvi(&m_list[2], 0) != 0
+		|| argvi(&m_list[2], 1) != 0
+		|| argvi(&m_list[2], 2) != 0
+		|| argvu(&m_list[2], 3) < 0x100
+		|| argvu(&m_list[2], 3) % 0x10 != 0
+		|| argvi(&m_list[2], 4) != G_TX_LOADTILE
+		|| argvi(&m_list[2], 5) != 0
+		|| argvu(&m_list[2], 6) != 0
+		|| argvi(&m_list[2], 7) != 0
+		|| argvi(&m_list[2], 8) != 0
+		|| argvu(&m_list[2], 9) != 0
+		|| argvi(&m_list[2], 10) != 0
+		|| argvi(&m_list[2], 11) != 0)
 	{
 		return -1;
 	}
-	int pal = (argvu(&m[2], 3) - 0x100) / 0x10;
-	if (m[3].id != gfxd_DPLoadSync)
+	int pal = (argvu(&m_list[2], 3) - 0x100) / 0x10;
+	if (m_list[3].id != gfxd_DPLoadSync)
 		return -1;
-	if (m[4].id != gfxd_DPLoadTLUTCmd
-		|| argvi(&m[4], 0) != G_TX_LOADTILE
-		|| argvi(&m[4], 1) != 15)
+	if (m_list[4].id != gfxd_DPLoadTLUTCmd
+		|| argvi(&m_list[4], 0) != G_TX_LOADTILE
+		|| argvi(&m_list[4], 1) != 15)
 	{
 		return -1;
 	}
-	if (m[5].id != gfxd_DPPipeSync)
+	if (m_list[5].id != gfxd_DPPipeSync)
 		return -1;
 	m->id = gfxd_DPLoadTLUT_pal16;
 	argi(m, 0, "pal", pal, gfxd_Pal);
@@ -151,109 +152,110 @@ UCFUNC int c_DPLoadTLUT_pal16(gfxd_macro_t *m, int n_macro)
 	return 0;
 }
 
-UCFUNC int c_DPLoadTLUT_pal256(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTLUT_pal256(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 6)
 		return -1;
-	if (m[0].id != gfxd_DPSetTextureImage
-		|| argvi(&m[0], 0) != G_IM_FMT_RGBA
-		|| argvi(&m[0], 1) != G_IM_SIZ_16b
-		|| argvi(&m[0], 2) != 1)
+	if (m_list[0].id != gfxd_DPSetTextureImage
+		|| argvi(&m_list[0], 0) != G_IM_FMT_RGBA
+		|| argvi(&m_list[0], 1) != G_IM_SIZ_16b
+		|| argvi(&m_list[0], 2) != 1)
 	{
 		return -1;
 	}
-	uint32_t dram = argvu(&m[0], 3);
-	if (m[1].id != gfxd_DPTileSync)
+	uint32_t dram = argvu(&m_list[0], 3);
+	if (m_list[1].id != gfxd_DPTileSync)
 		return -1;
-	if (m[2].id != gfxd_DPSetTile
-		|| argvi(&m[2], 0) != 0
-		|| argvi(&m[2], 1) != 0
-		|| argvi(&m[2], 2) != 0
-		|| argvu(&m[2], 3) != 0x100
-		|| argvi(&m[2], 4) != G_TX_LOADTILE
-		|| argvi(&m[2], 5) != 0
-		|| argvu(&m[2], 6) != 0
-		|| argvi(&m[2], 7) != 0
-		|| argvi(&m[2], 8) != 0
-		|| argvu(&m[2], 9) != 0
-		|| argvi(&m[2], 10) != 0
-		|| argvi(&m[2], 11) != 0)
+	if (m_list[2].id != gfxd_DPSetTile
+		|| argvi(&m_list[2], 0) != 0
+		|| argvi(&m_list[2], 1) != 0
+		|| argvi(&m_list[2], 2) != 0
+		|| argvu(&m_list[2], 3) != 0x100
+		|| argvi(&m_list[2], 4) != G_TX_LOADTILE
+		|| argvi(&m_list[2], 5) != 0
+		|| argvu(&m_list[2], 6) != 0
+		|| argvi(&m_list[2], 7) != 0
+		|| argvi(&m_list[2], 8) != 0
+		|| argvu(&m_list[2], 9) != 0
+		|| argvi(&m_list[2], 10) != 0
+		|| argvi(&m_list[2], 11) != 0)
 	{
 		return -1;
 	}
-	if (m[3].id != gfxd_DPLoadSync)
+	if (m_list[3].id != gfxd_DPLoadSync)
 		return -1;
-	if (m[4].id != gfxd_DPLoadTLUTCmd
-		|| argvi(&m[4], 0) != G_TX_LOADTILE
-		|| argvi(&m[4], 1) != 255)
+	if (m_list[4].id != gfxd_DPLoadTLUTCmd
+		|| argvi(&m_list[4], 0) != G_TX_LOADTILE
+		|| argvi(&m_list[4], 1) != 255)
 	{
 		return -1;
 	}
-	if (m[5].id != gfxd_DPPipeSync)
+	if (m_list[5].id != gfxd_DPPipeSync)
 		return -1;
 	m->id = gfxd_DPLoadTLUT_pal256;
 	argu(m, 0, "dram", dram, gfxd_Tlut);
 	return 0;
 }
 
-UCFUNC int c_ltb(gfxd_macro_t *m, int n_macro, int id, int mdxt, int mtmem,
-	int mrt, int myuv, int m4b)
+UCFUNC int c_ltb(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro, int id,
+	int mdxt, int mtmem, int mrt, int myuv, int m4b)
 {
 	if (n_macro < 7)
 		return -1;
-	if (m[0].id != gfxd_DPSetTextureImage || argvi(&m[0], 2) != 1)
+	if (m_list[0].id != gfxd_DPSetTextureImage || argvi(&m_list[0], 2) != 1)
 		return -1;
-	g_ifmt_t fmt = argvi(&m[0], 0);
-	g_isiz_t ldsiz = argvi(&m[0], 1);
-	uint32_t timg = argvu(&m[0], 3);
+	g_ifmt_t fmt = argvi(&m_list[0], 0);
+	g_isiz_t ldsiz = argvi(&m_list[0], 1);
+	uint32_t timg = argvu(&m_list[0], 3);
 	if (myuv && fmt != G_IM_FMT_YUV)
 		return -1;
-	if (m[1].id != gfxd_DPSetTile
-		|| argvi(&m[1], 0) != fmt
-		|| argvi(&m[1], 1) != ldsiz
-		|| argvi(&m[1], 2) != 0
-		|| argvi(&m[1], 4) != G_TX_LOADTILE
-		|| argvi(&m[1], 5) != 0)
+	if (m_list[1].id != gfxd_DPSetTile
+		|| argvi(&m_list[1], 0) != fmt
+		|| argvi(&m_list[1], 1) != ldsiz
+		|| argvi(&m_list[1], 2) != 0
+		|| argvi(&m_list[1], 4) != G_TX_LOADTILE
+		|| argvi(&m_list[1], 5) != 0)
 	{
 		return -1;
 	}
-	uint32_t tmem = argvu(&m[1], 3);
-	unsigned cms = argvu(&m[1], 9);
-	unsigned cmt = argvu(&m[1], 6);
-	int masks = argvi(&m[1], 10);
-	int maskt = argvi(&m[1], 7);
-	int shifts = argvi(&m[1], 11);
-	int shiftt = argvi(&m[1], 8);
-	if (m[2].id != gfxd_DPLoadSync)
+	uint32_t tmem = argvu(&m_list[1], 3);
+	unsigned cms = argvu(&m_list[1], 9);
+	unsigned cmt = argvu(&m_list[1], 6);
+	int masks = argvi(&m_list[1], 10);
+	int maskt = argvi(&m_list[1], 7);
+	int shifts = argvi(&m_list[1], 11);
+	int shiftt = argvi(&m_list[1], 8);
+	if (m_list[2].id != gfxd_DPLoadSync)
 		return -1;
-	if (m[3].id != gfxd_DPLoadBlock
-		|| argvi(&m[3], 0) != G_TX_LOADTILE
-		|| argvu(&m[3], 1) != 0
-		|| argvu(&m[3], 2) != 0)
+	if (m_list[3].id != gfxd_DPLoadBlock
+		|| argvi(&m_list[3], 0) != G_TX_LOADTILE
+		|| argvu(&m_list[3], 1) != 0
+		|| argvu(&m_list[3], 2) != 0)
 	{
 		return -1;
 	}
-	qu102_t ldlrs = argvu(&m[3], 3);
-	unsigned lddxt = argvu(&m[3], 4);
-	if (m[4].id != gfxd_DPPipeSync)
+	qu102_t ldlrs = argvu(&m_list[3], 3);
+	unsigned lddxt = argvu(&m_list[3], 4);
+	if (m_list[4].id != gfxd_DPPipeSync)
 		return -1;
-	if (m[5].id != gfxd_DPSetTile
-		|| argvi(&m[5], 0) != fmt
-		|| G_SIZ_LDSIZ(argvi(&m[5], 1)) != ldsiz
-		|| argvu(&m[5], 3) != tmem
-		|| argvu(&m[5], 6) != cmt
-		|| argvi(&m[5], 7) != maskt
-		|| argvi(&m[5], 8) != shiftt
-		|| argvu(&m[5], 9) != cms
-		|| argvi(&m[5], 10) != masks
-		|| argvi(&m[5], 11) != shifts)
+	if (m_list[5].id != gfxd_DPSetTile
+		|| argvi(&m_list[5], 0) != fmt
+		|| G_SIZ_LDSIZ(argvi(&m_list[5], 1)) != ldsiz
+		|| argvu(&m_list[5], 3) != tmem
+		|| argvu(&m_list[5], 6) != cmt
+		|| argvi(&m_list[5], 7) != maskt
+		|| argvi(&m_list[5], 8) != shiftt
+		|| argvu(&m_list[5], 9) != cms
+		|| argvi(&m_list[5], 10) != masks
+		|| argvi(&m_list[5], 11) != shifts)
 	{
 		return -1;
 	}
-	int siz = argvi(&m[5], 1);
-	int rdline = argvi(&m[5], 2);
-	int rt = argvi(&m[5], 4);
-	int pal = argvi(&m[5], 5);
+	int siz = argvi(&m_list[5], 1);
+	int rdline = argvi(&m_list[5], 2);
+	int rt = argvi(&m_list[5], 4);
+	int pal = argvi(&m_list[5], 5);
 	if (m4b && siz != G_IM_SIZ_4b)
 		return -1;
 	if (!(mrt && rt != G_TX_RENDERTILE && tmem == 0)
@@ -263,17 +265,17 @@ UCFUNC int c_ltb(gfxd_macro_t *m, int n_macro, int id, int mdxt, int mtmem,
 	}
 	if ((rt != G_TX_RENDERTILE) != mrt)
 		return -1;
-	if (m[6].id != gfxd_DPSetTileSize
-		|| argvi(&m[6], 0) != rt
-		|| argvu(&m[6], 1) != 0
-		|| argvu(&m[6], 2) != 0
-		|| (argvu(&m[6], 3) & 3)
-		|| (argvu(&m[6], 4) & 3))
+	if (m_list[6].id != gfxd_DPSetTileSize
+		|| argvi(&m_list[6], 0) != rt
+		|| argvu(&m_list[6], 1) != 0
+		|| argvu(&m_list[6], 2) != 0
+		|| (argvu(&m_list[6], 3) & 3)
+		|| (argvu(&m_list[6], 4) & 3))
 	{
 		return -1;
 	}
-	int width = (argvu(&m[6], 3) >> 2) + 1;
-	int height = (argvu(&m[6], 4) >> 2) + 1;
+	int width = (argvu(&m_list[6], 3) >> 2) + 1;
+	int height = (argvu(&m_list[6], 4) >> 2) + 1;
 	unsigned lrs = G_LDBLK_TXL(G_LTB_LRS(width, height, siz));
 	unsigned dxt = 0;
 	if (!mdxt)
@@ -285,6 +287,7 @@ UCFUNC int c_ltb(gfxd_macro_t *m, int n_macro, int id, int mdxt, int mtmem,
 		line = (width * G_SIZ_LDBITS(siz) + 63) / 64;
 	if (ldlrs != lrs || lddxt != dxt || rdline != line)
 		return -1;
+
 	m->id = id;
 	int i = 0;
 	argu(m, i++, "timg", timg, gfxd_Timg);
@@ -307,164 +310,182 @@ UCFUNC int c_ltb(gfxd_macro_t *m, int n_macro, int id, int mdxt, int mtmem,
 	return 0;
 }
 
-UCFUNC int c_DPLoadMultiBlockYuvS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlockYuvS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlockYuvS, 1, 1, 1, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlockYuvS, 1, 1, 1, 1, 0);
 }
 
-UCFUNC int c_DPLoadMultiBlockYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlockYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlockYuv, 0, 1, 1, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlockYuv, 0, 1, 1, 1, 0);
 }
 
-UCFUNC int c_DPLoadMultiBlock_4bS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlock_4bS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlock_4bS, 1, 1, 1, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlock_4bS, 1, 1, 1, 0, 1);
 }
 
-UCFUNC int c_DPLoadMultiBlock_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlock_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlock_4b, 0, 1, 1, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlock_4b, 0, 1, 1, 0, 1);
 }
 
-UCFUNC int c_DPLoadMultiBlockS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlockS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlockS, 1, 1, 1, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlockS, 1, 1, 1, 0, 0);
 }
 
-UCFUNC int c_DPLoadMultiBlock(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiBlock(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadMultiBlock, 0, 1, 1, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadMultiBlock, 0, 1, 1, 0, 0);
 }
 
-UCFUNC int c__DPLoadTextureBlockYuvS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlockYuvS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlockYuvS, 1, 1, 0, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlockYuvS, 1, 1, 0, 1, 0);
 }
 
-UCFUNC int c__DPLoadTextureBlockYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlockYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlockYuv, 0, 1, 0, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlockYuv, 0, 1, 0, 1, 0);
 }
 
-UCFUNC int c__DPLoadTextureBlock_4bS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlock_4bS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlock_4bS, 1, 1, 0, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlock_4bS, 1, 1, 0, 0, 1);
 }
 
-UCFUNC int c__DPLoadTextureBlock_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlock_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlock_4b, 0, 1, 0, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlock_4b, 0, 1, 0, 0, 1);
 }
 
-UCFUNC int c__DPLoadTextureBlockS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlockS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlockS, 1, 1, 0, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlockS, 1, 1, 0, 0, 0);
 }
 
-UCFUNC int c__DPLoadTextureBlock(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureBlock(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd__DPLoadTextureBlock, 0, 1, 0, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd__DPLoadTextureBlock, 0, 1, 0, 0, 0);
 }
 
-UCFUNC int c_DPLoadTextureBlockYuvS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlockYuvS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlockYuvS, 1, 0, 0, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlockYuvS, 1, 0, 0, 1, 0);
 }
 
-UCFUNC int c_DPLoadTextureBlockYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlockYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlockYuv, 0, 0, 0, 1, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlockYuv, 0, 0, 0, 1, 0);
 }
 
-UCFUNC int c_DPLoadTextureBlock_4bS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlock_4bS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlock_4bS, 1, 0, 0, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlock_4bS, 1, 0, 0, 0, 1);
 }
 
-UCFUNC int c_DPLoadTextureBlock_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlock_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlock_4b, 0, 0, 0, 0, 1);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlock_4b, 0, 0, 0, 0, 1);
 }
 
-UCFUNC int c_DPLoadTextureBlockS(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlockS(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlockS, 1, 0, 0, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlockS, 1, 0, 0, 0, 0);
 }
 
-UCFUNC int c_DPLoadTextureBlock(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureBlock(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltb(m, n_macro, gfxd_DPLoadTextureBlock, 0, 0, 0, 0, 0);
+	return c_ltb(m, m_list, n_macro, gfxd_DPLoadTextureBlock, 0, 0, 0, 0, 0);
 }
 
-UCFUNC int c_ltt(gfxd_macro_t *m, int n_macro, int id, int mtmem, int mrt,
-	int myuv, int m4b)
+UCFUNC int c_ltt(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro, int id,
+	int mtmem, int mrt, int myuv, int m4b)
 {
 	if (n_macro < 7)
 		return -1;
-	if (m[0].id != gfxd_DPSetTextureImage)
+	if (m_list[0].id != gfxd_DPSetTextureImage)
 		return -1;
-	g_ifmt_t fmt = argvi(&m[0], 0);
-	g_isiz_t ldsiz = argvi(&m[0], 1);
-	int width = argvi(&m[0], 2);
+	g_ifmt_t fmt = argvi(&m_list[0], 0);
+	g_isiz_t ldsiz = argvi(&m_list[0], 1);
+	int width = argvi(&m_list[0], 2);
 	if (m4b)
 	{
 		if (ldsiz != G_IM_SIZ_8b)
 			return -1;
 		width *= 2;
 	}
-	uint32_t timg = argvu(&m[0], 3);
+	uint32_t timg = argvu(&m_list[0], 3);
 	if (myuv && fmt != G_IM_FMT_YUV)
 		return -1;
-	if (m[1].id != gfxd_DPSetTile
-		|| argvi(&m[1], 0) != fmt
-		|| argvi(&m[1], 1) != ldsiz
-		|| argvi(&m[1], 4) != G_TX_LOADTILE
-		|| argvi(&m[1], 5) != 0)
+	if (m_list[1].id != gfxd_DPSetTile
+		|| argvi(&m_list[1], 0) != fmt
+		|| argvi(&m_list[1], 1) != ldsiz
+		|| argvi(&m_list[1], 4) != G_TX_LOADTILE
+		|| argvi(&m_list[1], 5) != 0)
 	{
 		return -1;
 	}
-	int ldline = argvi(&m[1], 2);
-	uint32_t tmem = argvu(&m[1], 3);
-	unsigned cms = argvu(&m[1], 9);
-	unsigned cmt = argvu(&m[1], 6);
-	int masks = argvi(&m[1], 10);
-	int maskt = argvi(&m[1], 7);
-	int shifts = argvi(&m[1], 11);
-	int shiftt = argvi(&m[1], 8);
-	if (m[2].id != gfxd_DPLoadSync)
+	int ldline = argvi(&m_list[1], 2);
+	uint32_t tmem = argvu(&m_list[1], 3);
+	unsigned cms = argvu(&m_list[1], 9);
+	unsigned cmt = argvu(&m_list[1], 6);
+	int masks = argvi(&m_list[1], 10);
+	int maskt = argvi(&m_list[1], 7);
+	int shifts = argvi(&m_list[1], 11);
+	int shiftt = argvi(&m_list[1], 8);
+	if (m_list[2].id != gfxd_DPLoadSync)
 		return -1;
-	if (m[3].id != gfxd_DPLoadTile
-		|| argvi(&m[3], 0) != G_TX_LOADTILE
-		|| (argvu(&m[3], 1) & 1)
-		|| (argvu(&m[3], 2) & 3)
-		|| (argvu(&m[3], 3) & 1)
-		|| (argvu(&m[3], 4) & 3))
+	if (m_list[3].id != gfxd_DPLoadTile
+		|| argvi(&m_list[3], 0) != G_TX_LOADTILE
+		|| (argvu(&m_list[3], 1) & 1)
+		|| (argvu(&m_list[3], 2) & 3)
+		|| (argvu(&m_list[3], 3) & 1)
+		|| (argvu(&m_list[3], 4) & 3))
 	{
 		return -1;
 	}
-	qu102_t lduls = argvu(&m[3], 1);
-	qu102_t ldult = argvu(&m[3], 2);
-	qu102_t ldlrs = argvu(&m[3], 3);
-	qu102_t ldlrt = argvu(&m[3], 4);
-	if (m[4].id != gfxd_DPPipeSync)
+	qu102_t lduls = argvu(&m_list[3], 1);
+	qu102_t ldult = argvu(&m_list[3], 2);
+	qu102_t ldlrs = argvu(&m_list[3], 3);
+	qu102_t ldlrt = argvu(&m_list[3], 4);
+	if (m_list[4].id != gfxd_DPPipeSync)
 		return -1;
-	if (m[5].id != gfxd_DPSetTile
-		|| argvi(&m[5], 0) != fmt
-		|| argvi(&m[5], 2) != ldline
-		|| argvu(&m[5], 3) != tmem
-		|| argvu(&m[5], 6) != cmt
-		|| argvi(&m[5], 7) != maskt
-		|| argvi(&m[5], 8) != shiftt
-		|| argvu(&m[5], 9) != cms
-		|| argvi(&m[5], 10) != masks
-		|| argvi(&m[5], 11) != shifts)
+	if (m_list[5].id != gfxd_DPSetTile
+		|| argvi(&m_list[5], 0) != fmt
+		|| argvi(&m_list[5], 2) != ldline
+		|| argvu(&m_list[5], 3) != tmem
+		|| argvu(&m_list[5], 6) != cmt
+		|| argvi(&m_list[5], 7) != maskt
+		|| argvi(&m_list[5], 8) != shiftt
+		|| argvu(&m_list[5], 9) != cms
+		|| argvi(&m_list[5], 10) != masks
+		|| argvi(&m_list[5], 11) != shifts)
 	{
 		return -1;
 	}
-	int siz = argvi(&m[5], 1);
-	int rt = argvi(&m[5], 4);
-	int pal = argvi(&m[5], 5);
+	int siz = argvi(&m_list[5], 1);
+	int rt = argvi(&m_list[5], 4);
+	int pal = argvi(&m_list[5], 5);
 	if (m4b)
 	{
 		if (siz != G_IM_SIZ_4b)
@@ -479,19 +500,19 @@ UCFUNC int c_ltt(gfxd_macro_t *m, int n_macro, int id, int mtmem, int mrt,
 	}
 	if ((rt != G_TX_RENDERTILE) != mrt)
 		return -1;
-	if (m[6].id != gfxd_DPSetTileSize
-		|| argvi(&m[6], 0) != rt
-		|| (argvu(&m[6], 1) & 3)
-		|| (argvu(&m[6], 2) & 3)
-		|| (argvu(&m[6], 3) & 3)
-		|| (argvu(&m[6], 4) & 3))
+	if (m_list[6].id != gfxd_DPSetTileSize
+		|| argvi(&m_list[6], 0) != rt
+		|| (argvu(&m_list[6], 1) & 3)
+		|| (argvu(&m_list[6], 2) & 3)
+		|| (argvu(&m_list[6], 3) & 3)
+		|| (argvu(&m_list[6], 4) & 3))
 	{
 		return -1;
 	}
-	unsigned uls = argvu(&m[6], 1) >> 2;
-	unsigned ult = argvu(&m[6], 2) >> 2;
-	unsigned lrs = argvu(&m[6], 3) >> 2;
-	unsigned lrt = argvu(&m[6], 4) >> 2;
+	unsigned uls = argvu(&m_list[6], 1) >> 2;
+	unsigned ult = argvu(&m_list[6], 2) >> 2;
+	unsigned lrs = argvu(&m_list[6], 3) >> 2;
+	unsigned lrt = argvu(&m_list[6], 4) >> 2;
 	int line;
 	if (myuv)
 		line = ((lrs - uls + 1) + 7) / 8;
@@ -534,49 +555,57 @@ UCFUNC int c_ltt(gfxd_macro_t *m, int n_macro, int id, int mtmem, int mrt,
 	return 0;
 }
 
-UCFUNC int c_DPLoadMultiTileYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiTileYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadMultiTileYuv, 1, 1, 1, 0);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadMultiTileYuv, 1, 1, 1, 0);
 }
 
-UCFUNC int c_DPLoadMultiTile_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiTile_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadMultiTile_4b, 1, 1, 0, 1);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadMultiTile_4b, 1, 1, 0, 1);
 }
 
-UCFUNC int c_DPLoadMultiTile(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadMultiTile(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadMultiTile, 1, 1, 0, 0);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadMultiTile, 1, 1, 0, 0);
 }
 
-UCFUNC int c__DPLoadTextureTileYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureTileYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd__DPLoadTextureTileYuv, 1, 0, 1, 0);
+	return c_ltt(m, m_list, n_macro, gfxd__DPLoadTextureTileYuv, 1, 0, 1, 0);
 }
 
-UCFUNC int c__DPLoadTextureTile_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureTile_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd__DPLoadTextureTile_4b, 1, 0, 0, 1);
+	return c_ltt(m, m_list, n_macro, gfxd__DPLoadTextureTile_4b, 1, 0, 0, 1);
 }
 
-UCFUNC int c__DPLoadTextureTile(gfxd_macro_t *m, int n_macro)
+UCFUNC int c__DPLoadTextureTile(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd__DPLoadTextureTile, 1, 0, 0, 0);
+	return c_ltt(m, m_list, n_macro, gfxd__DPLoadTextureTile, 1, 0, 0, 0);
 }
 
-UCFUNC int c_DPLoadTextureTileYuv(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureTileYuv(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadTextureTileYuv, 0, 0, 1, 0);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadTextureTileYuv, 0, 0, 1, 0);
 }
 
-UCFUNC int c_DPLoadTextureTile_4b(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureTile_4b(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadTextureTile_4b, 0, 0, 0, 1);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadTextureTile_4b, 0, 0, 0, 1);
 }
 
-UCFUNC int c_DPLoadTextureTile(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTextureTile(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
-	return c_ltt(m, n_macro, gfxd_DPLoadTextureTile, 0, 0, 0, 0);
+	return c_ltt(m, m_list, n_macro, gfxd_DPLoadTextureTile, 0, 0, 0, 0);
 }
 
 UCFUNC int d_DPLoadBlock(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
@@ -1185,17 +1214,18 @@ UCFUNC int d_SP1Quadrangle(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return ret;
 }
 
-UCFUNC int c_SPBranchLessZraw(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPBranchLessZraw(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_DPHalf1)
+	if (m_list[0].id != gfxd_DPHalf1)
 		return -1;
-	uint32_t branchdl = argvu(&m[0], 0);
-	if (m[1].id != gfxd_BranchZ)
+	uint32_t branchdl = argvu(&m_list[0], 0);
+	if (m_list[1].id != gfxd_BranchZ)
 		return -1;
-	int32_t vtx = argvi(&m[1], 0);
-	int32_t zval = argvi(&m[1], 1);
+	int32_t vtx = argvi(&m_list[1], 0);
+	int32_t zval = argvi(&m_list[1], 1);
 	m->id = gfxd_SPBranchLessZraw;
 	argu(m, 0, "dl", branchdl, gfxd_Dl);
 	argi(m, 1, "vtx", vtx, gfxd_Vtx);
@@ -1211,35 +1241,35 @@ UCFUNC int d_SPBranchList(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_SPClipRatio(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPClipRatio(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 4)
 		return -1;
-	if (m[0].id != gfxd_MoveWd
-		|| argvi(&m[0], 0) != G_MW_CLIP
-		|| argvu(&m[0], 1) != G_MWO_CLIP_RNX)
+	if (m_list[0].id != gfxd_MoveWd
+		|| argvi(&m_list[0], 0) != G_MW_CLIP
+		|| argvu(&m_list[0], 1) != G_MWO_CLIP_RNX)
 	{
 		return -1;
 	}
-	uint32_t r = argvu(&m[0], 2);
-	if (m[1].id != gfxd_MoveWd
-		|| argvi(&m[1], 0) != G_MW_CLIP
-		|| argvu(&m[1], 1) != G_MWO_CLIP_RNY
-		|| argvu(&m[1], 2) != r)
+	uint32_t r = argvu(&m_list[0], 2);
+	if (m_list[1].id != gfxd_MoveWd
+		|| argvi(&m_list[1], 0) != G_MW_CLIP
+		|| argvu(&m_list[1], 1) != G_MWO_CLIP_RNY
+		|| argvu(&m_list[1], 2) != r)
 	{
 		return -1;
 	}
-	if (m[2].id != gfxd_MoveWd
-		|| argvi(&m[2], 0) != G_MW_CLIP
-		|| argvu(&m[2], 1) != G_MWO_CLIP_RPX
-		|| ((uint32_t)1 << 16) - argvu(&m[2], 2) != r)
+	if (m_list[2].id != gfxd_MoveWd
+		|| argvi(&m_list[2], 0) != G_MW_CLIP
+		|| argvu(&m_list[2], 1) != G_MWO_CLIP_RPX
+		|| ((uint32_t)1 << 16) - argvu(&m_list[2], 2) != r)
 	{
 		return -1;
 	}
-	if (m[3].id != gfxd_MoveWd
-		|| argvi(&m[3], 0) != G_MW_CLIP
-		|| argvu(&m[3], 1) != G_MWO_CLIP_RPY
-		|| ((uint32_t)1 << 16) - argvu(&m[3], 2) != r)
+	if (m_list[3].id != gfxd_MoveWd
+		|| argvi(&m_list[3], 0) != G_MW_CLIP
+		|| argvu(&m_list[3], 1) != G_MWO_CLIP_RPY
+		|| ((uint32_t)1 << 16) - argvu(&m_list[3], 2) != r)
 	{
 		return -1;
 	}
@@ -1343,46 +1373,46 @@ UCFUNC int d_SPFogPosition(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 }
 
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
-UCFUNC int c_SPForceMatrix(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPForceMatrix(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 4)
 		return -1;
 	for (int i = 0; i < 4; i++)
-		if (m[i].id != gfxd_MoveMem
-			|| argvu(&m[i], 0) != 16
-			|| argvu(&m[i], 2) != argvu(&m[0], 2) + i * 16)
+		if (m_list[i].id != gfxd_MoveMem
+			|| argvu(&m_list[i], 0) != 16
+			|| argvu(&m_list[i], 2) != argvu(&m_list[0], 2) + i * 16)
 		{
 			return -1;
 		}
-	if (argvi(&m[0], 1) != G_MV_MATRIX_1
-		|| argvi(&m[1], 1) != G_MV_MATRIX_2
-		|| argvi(&m[2], 1) != G_MV_MATRIX_3
-		|| argvi(&m[3], 1) != G_MV_MATRIX_4)
+	if (argvi(&m_list[0], 1) != G_MV_MATRIX_1
+		|| argvi(&m_list[1], 1) != G_MV_MATRIX_2
+		|| argvi(&m_list[2], 1) != G_MV_MATRIX_3
+		|| argvi(&m_list[3], 1) != G_MV_MATRIX_4)
 	{
 		return -1;
 	}
-	uint32_t mptr = argvu(&m[0], 2);
+	uint32_t mptr = argvu(&m_list[0], 2);
 	m->id = gfxd_SPForceMatrix;
 	argu(m, 0, "mptr", mptr, gfxd_Mtxptr);
 	return 0;
 }
 #elif defined(F3DEX_GBI_2)
-UCFUNC int c_SPForceMatrix(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPForceMatrix(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_MoveMem
-		|| argvu(&m[0], 0) != sizeof(Mtx)
-		|| argvi(&m[0], 1) != G_MV_MATRIX
-		|| argvu(&m[0], 2) != 0)
+	if (m_list[0].id != gfxd_MoveMem
+		|| argvu(&m_list[0], 0) != sizeof(Mtx)
+		|| argvi(&m_list[0], 1) != G_MV_MATRIX
+		|| argvu(&m_list[0], 2) != 0)
 	{
 		return -1;
 	}
-	uint32_t mptr = argvu(&m[0], 3);
-	if (m[1].id != gfxd_MoveWd
-		|| argvi(&m[1], 0) != G_MW_FORCEMTX
-		|| argvu(&m[1], 1) != 0
-		|| argvu(&m[1], 2) != 0x10000)
+	uint32_t mptr = argvu(&m_list[0], 3);
+	if (m_list[1].id != gfxd_MoveWd
+		|| argvi(&m_list[1], 0) != G_MW_FORCEMTX
+		|| argvu(&m_list[1], 1) != 0
+		|| argvu(&m_list[1], 2) != 0x10000)
 	{
 		return -1;
 	}
@@ -1411,17 +1441,18 @@ UCFUNC int d_SPClearGeometryMode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 }
 
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
-UCFUNC int c_SPLoadGeometryMode(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPLoadGeometryMode(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_SPClearGeometryMode
-		|| argvu(&m[0], 0) != 0xFFFFFFFF
-		|| m[1].id != gfxd_SPSetGeometryMode)
+	if (m_list[0].id != gfxd_SPClearGeometryMode
+		|| argvu(&m_list[0], 0) != 0xFFFFFFFF
+		|| m_list[1].id != gfxd_SPSetGeometryMode)
 	{
 		return -1;
 	}
-	uint32_t mode = argvu(&m[1], 0);
+	uint32_t mode = argvu(&m_list[1], 0);
 	m->id = gfxd_SPLoadGeometryMode;
 	argu(m, 0, "mode", mode, gfxd_Gm);
 	return 0;
@@ -1574,17 +1605,17 @@ UCFUNC int d_SPLineW3D(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 #endif
 
 #if defined(F3DEX_GBI) || defined(F3DEX_GBI_2)
-UCFUNC int c_SPLoadUcode(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPLoadUcode(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_DPHalf1)
+	if (m_list[0].id != gfxd_DPHalf1)
 		return -1;
-	uint32_t uc_dstart = argvu(&m[0], 0);
-	if (m[1].id != gfxd_LoadUcode)
+	uint32_t uc_dstart = argvu(&m_list[0], 0);
+	if (m_list[1].id != gfxd_LoadUcode)
 		return -1;
-	uint32_t uc_start = argvu(&m[1], 0);
-	uint32_t uc_dsize = argvu(&m[1], 1);
+	uint32_t uc_start = argvu(&m_list[1], 0);
+	uint32_t uc_dsize = argvu(&m_list[1], 1);
 	if (uc_dsize != 0x800)
 		return -1;
 	m->id = gfxd_SPLoadUcode;
@@ -1608,14 +1639,14 @@ UCFUNC int d_SPLookAtY(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_SPLookAt(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPLookAt(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_SPLookAtX)
+	if (m_list[0].id != gfxd_SPLookAtX)
 		return -1;
-	uint32_t l = argvu(&m[0], 0);
-	if (m[1].id != gfxd_SPLookAtY || argvu(&m[1], 0) != l + 0x10)
+	uint32_t l = argvu(&m_list[0], 0);
+	if (m_list[1].id != gfxd_SPLookAtY || argvu(&m_list[1], 0) != l + 0x10)
 		return -1;
 	m->id = gfxd_SPLookAt;
 	argu(m, 0, "l", l, gfxd_Lookatptr);
@@ -1743,22 +1774,23 @@ UCFUNC int d_SPSegment(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return ret;
 }
 
-UCFUNC int c_SPSetLightsN(gfxd_macro_t *m, int n_macro, int id, int numlights)
+UCFUNC int c_SPSetLightsN(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro,
+	int id, int numlights)
 {
 	if (n_macro < 2 + numlights)
 		return -1;
-	if (m[0].id != gfxd_SPNumLights || argvi(&m[0], 0) != numlights)
+	if (m_list[0].id != gfxd_SPNumLights || argvi(&m_list[0], 0) != numlights)
 		return -1;
 	int a = 1 + numlights;
-	if (m[a].id != gfxd_SPLight || argvi(&m[a], 1) != a)
+	if (m_list[a].id != gfxd_SPLight || argvi(&m_list[a], 1) != a)
 		return -1;
-	uint32_t l = argvu(&m[a], 0);
+	uint32_t l = argvu(&m_list[a], 0);
 	for (int i = 1; i <= numlights; i++)
 	{
 		int offset = sizeof(Ambient) + sizeof(Light) * (i - 1);
-		if (m[i].id != gfxd_SPLight
-			|| argvu(&m[i], 0) != l + offset
-			|| argvi(&m[i], 1) != i)
+		if (m_list[i].id != gfxd_SPLight
+			|| argvu(&m_list[i], 0) != l + offset
+			|| argvi(&m_list[i], 1) != i)
 		{
 			return -1;
 		}
@@ -1768,39 +1800,39 @@ UCFUNC int c_SPSetLightsN(gfxd_macro_t *m, int n_macro, int id, int numlights)
 	return 0;
 }
 
-UCFUNC int c_SPSetLights1(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights1(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights1, NUMLIGHTS_1);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights1, NUMLIGHTS_1);
 }
 
-UCFUNC int c_SPSetLights2(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights2(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights2, NUMLIGHTS_2);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights2, NUMLIGHTS_2);
 }
 
-UCFUNC int c_SPSetLights3(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights3(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights3, NUMLIGHTS_3);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights3, NUMLIGHTS_3);
 }
 
-UCFUNC int c_SPSetLights4(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights4(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights4, NUMLIGHTS_4);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights4, NUMLIGHTS_4);
 }
 
-UCFUNC int c_SPSetLights5(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights5(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights5, NUMLIGHTS_5);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights5, NUMLIGHTS_5);
 }
 
-UCFUNC int c_SPSetLights6(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights6(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights6, NUMLIGHTS_6);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights6, NUMLIGHTS_6);
 }
 
-UCFUNC int c_SPSetLights7(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPSetLights7(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
-	return c_SPSetLightsN(m, n_macro, gfxd_SPSetLights7, NUMLIGHTS_7);
+	return c_SPSetLightsN(m, m_list, n_macro, gfxd_SPSetLights7, NUMLIGHTS_7);
 }
 
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
@@ -1851,23 +1883,23 @@ UCFUNC int d_SPLight(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 }
 #endif
 
-UCFUNC int c_SPLightColor(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPLightColor(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_MoveWd
-		|| argvi(&m[0], 0) != G_MW_LIGHTCOL
-		|| argvu(&m[0], 1) % 0x18 != 0
-		|| argvu(&m[0], 1) > G_MWO_aLIGHT_8)
+	if (m_list[0].id != gfxd_MoveWd
+		|| argvi(&m_list[0], 0) != G_MW_LIGHTCOL
+		|| argvu(&m_list[0], 1) % 0x18 != 0
+		|| argvu(&m_list[0], 1) > G_MWO_aLIGHT_8)
 	{
 		return -1;
 	}
-	uint32_t offset = argvu(&m[0], 1);
-	uint32_t packedcolor = argvu(&m[0], 2);
-	if (m[1].id != gfxd_MoveWd
-		|| argvi(&m[1], 0) != G_MW_LIGHTCOL
-		|| argvu(&m[1], 1) != offset + 4
-		|| argvu(&m[1], 2) != packedcolor)
+	uint32_t offset = argvu(&m_list[0], 1);
+	uint32_t packedcolor = argvu(&m_list[0], 2);
+	if (m_list[1].id != gfxd_MoveWd
+		|| argvi(&m_list[1], 0) != G_MW_LIGHTCOL
+		|| argvu(&m_list[1], 1) != offset + 4
+		|| argvu(&m_list[1], 2) != packedcolor)
 	{
 		return -1;
 	}
@@ -1892,25 +1924,26 @@ UCFUNC int d_SPTexture(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_SPTextureRectangle(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPTextureRectangle(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 3)
 		return -1;
-	if (m[0].id != gfxd_TexRect)
+	if (m_list[0].id != gfxd_TexRect)
 		return -1;
-	qu102_t ulx = argvu(&m[0], 0);
-	qu102_t uly = argvu(&m[0], 1);
-	qu102_t lrx = argvu(&m[0], 2);
-	qu102_t lry = argvu(&m[0], 3);
-	int tile = argvi(&m[0], 4);
-	if (m[1].id != gfxd_DPHalf1)
+	qu102_t ulx = argvu(&m_list[0], 0);
+	qu102_t uly = argvu(&m_list[0], 1);
+	qu102_t lrx = argvu(&m_list[0], 2);
+	qu102_t lry = argvu(&m_list[0], 3);
+	int tile = argvi(&m_list[0], 4);
+	if (m_list[1].id != gfxd_DPHalf1)
 		return -1;
-	qs105_t s = sx(getfield(argvu(&m[1], 0), 16, 16), 16);
-	qs105_t t = sx(getfield(argvu(&m[1], 0), 16, 0), 16);
-	if (m[2].id != gfxd_DPHalf2)
+	qs105_t s = sx(getfield(argvu(&m_list[1], 0), 16, 16), 16);
+	qs105_t t = sx(getfield(argvu(&m_list[1], 0), 16, 0), 16);
+	if (m_list[2].id != gfxd_DPHalf2)
 		return -1;
-	qs510_t dsdx = sx(getfield(argvu(&m[2], 0), 16, 16), 16);
-	qs510_t dtdy = sx(getfield(argvu(&m[2], 0), 16, 0), 16);
+	qs510_t dsdx = sx(getfield(argvu(&m_list[2], 0), 16, 16), 16);
+	qs510_t dtdy = sx(getfield(argvu(&m_list[2], 0), 16, 0), 16);
 	m->id = gfxd_SPTextureRectangle;
 	argu(m, 0, "ulx", ulx, gfxd_Coordq);
 	argu(m, 1, "uly", uly, gfxd_Coordq);
@@ -1924,25 +1957,26 @@ UCFUNC int c_SPTextureRectangle(gfxd_macro_t *m, int n_macro)
 	return 0;
 }
 
-UCFUNC int c_SPTextureRectangleFlip(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPTextureRectangleFlip(gfxd_macro_t *m, gfxd_macro_t *m_list,
+	int n_macro)
 {
 	if (n_macro < 3)
 		return -1;
-	if (m[0].id != gfxd_TexRectFlip)
+	if (m_list[0].id != gfxd_TexRectFlip)
 		return -1;
-	qu102_t ulx = argvu(&m[0], 0);
-	qu102_t uly = argvu(&m[0], 1);
-	qu102_t lrx = argvu(&m[0], 2);
-	qu102_t lry = argvu(&m[0], 3);
-	int tile = argvi(&m[0], 4);
-	if (m[1].id != gfxd_DPHalf1)
+	qu102_t ulx = argvu(&m_list[0], 0);
+	qu102_t uly = argvu(&m_list[0], 1);
+	qu102_t lrx = argvu(&m_list[0], 2);
+	qu102_t lry = argvu(&m_list[0], 3);
+	int tile = argvi(&m_list[0], 4);
+	if (m_list[1].id != gfxd_DPHalf1)
 		return -1;
-	qs105_t s = sx(getfield(argvu(&m[1], 0), 16, 16), 16);
-	qs105_t t = sx(getfield(argvu(&m[1], 0), 16, 0), 16);
-	if (m[2].id != gfxd_DPHalf2)
+	qs105_t s = sx(getfield(argvu(&m_list[1], 0), 16, 16), 16);
+	qs105_t t = sx(getfield(argvu(&m_list[1], 0), 16, 0), 16);
+	if (m_list[2].id != gfxd_DPHalf2)
 		return -1;
-	qs510_t dsdx = sx(getfield(argvu(&m[2], 0), 16, 16), 16);
-	qs510_t dtdy = sx(getfield(argvu(&m[2], 0), 16, 0), 16);
+	qs510_t dsdx = sx(getfield(argvu(&m_list[2], 0), 16, 16), 16);
+	qs510_t dtdy = sx(getfield(argvu(&m_list[2], 0), 16, 0), 16);
 	m->id = gfxd_SPTextureRectangleFlip;
 	argu(m, 0, "ulx", ulx, gfxd_Coordq);
 	argu(m, 1, "uly", uly, gfxd_Coordq);
@@ -2025,42 +2059,43 @@ UCFUNC int d_DPLoadTLUTCmd(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_DPLoadTLUT(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPLoadTLUT(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 6)
 		return -1;
-	if (m[0].id != gfxd_DPSetTextureImage
-		|| argvi(&m[0], 0) != G_IM_FMT_RGBA
-		|| argvi(&m[0], 1) != G_IM_SIZ_16b
-		|| argvi(&m[0], 2) != 1)
+	if (m_list[0].id != gfxd_DPSetTextureImage
+		|| argvi(&m_list[0], 0) != G_IM_FMT_RGBA
+		|| argvi(&m_list[0], 1) != G_IM_SIZ_16b
+		|| argvi(&m_list[0], 2) != 1)
 	{
 		return -1;
 	}
-	uint32_t dram = argvu(&m[0], 3);
-	if (m[1].id != gfxd_DPTileSync)
+	uint32_t dram = argvu(&m_list[0], 3);
+	if (m_list[1].id != gfxd_DPTileSync)
 		return -1;
-	if (m[2].id != gfxd_DPSetTile
-		|| argvi(&m[2], 0) != 0
-		|| argvi(&m[2], 1) != 0
-		|| argvi(&m[2], 2) != 0
-		|| argvi(&m[2], 4) != G_TX_LOADTILE
-		|| argvi(&m[2], 5) != 0
-		|| argvu(&m[2], 6) != 0
-		|| argvi(&m[2], 7) != 0
-		|| argvi(&m[2], 8) != 0
-		|| argvu(&m[2], 9) != 0
-		|| argvi(&m[2], 10) != 0
-		|| argvi(&m[2], 11) != 0)
+	if (m_list[2].id != gfxd_DPSetTile
+		|| argvi(&m_list[2], 0) != 0
+		|| argvi(&m_list[2], 1) != 0
+		|| argvi(&m_list[2], 2) != 0
+		|| argvi(&m_list[2], 4) != G_TX_LOADTILE
+		|| argvi(&m_list[2], 5) != 0
+		|| argvu(&m_list[2], 6) != 0
+		|| argvi(&m_list[2], 7) != 0
+		|| argvi(&m_list[2], 8) != 0
+		|| argvu(&m_list[2], 9) != 0
+		|| argvi(&m_list[2], 10) != 0
+		|| argvi(&m_list[2], 11) != 0)
 	{
 		return -1;
 	}
-	uint32_t tmem = argvu(&m[2], 3);
-	if (m[3].id != gfxd_DPLoadSync)
+	uint32_t tmem = argvu(&m_list[2], 3);
+	if (m_list[3].id != gfxd_DPLoadSync)
 		return -1;
-	if (m[4].id != gfxd_DPLoadTLUTCmd || argvi(&m[4], 0) != G_TX_LOADTILE)
+	if (m_list[4].id != gfxd_DPLoadTLUTCmd ||
+		argvi(&m_list[4], 0) != G_TX_LOADTILE)
 		return -1;
-	int count = argvi(&m[4], 1) + 1;
-	if (m[5].id != gfxd_DPPipeSync)
+	int count = argvi(&m_list[4], 1) + 1;
+	if (m_list[5].id != gfxd_DPPipeSync)
 		return -1;
 	m->id = gfxd_DPLoadTLUT;
 	argi(m, 0, "count", count, gfxd_Num);
@@ -2122,14 +2157,14 @@ UCFUNC int d_DPHalf2(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_DPWord(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_DPWord(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_DPHalf1 || m[1].id != gfxd_DPHalf2)
+	if (m_list[0].id != gfxd_DPHalf1 || m_list[1].id != gfxd_DPHalf2)
 		return -1;
-	uint32_t wordhi = argvu(&m[0], 0);
-	uint32_t wordlo = argvu(&m[1], 0);
+	uint32_t wordhi = argvu(&m_list[0], 0);
+	uint32_t wordlo = argvu(&m_list[1], 0);
 	m->id = gfxd_DPWord;
 	argu(m, 0, "wordhi", wordhi, gfxd_Word);
 	argu(m, 1, "wordlo", wordlo, gfxd_Word);
@@ -2433,17 +2468,17 @@ UCFUNC int d_LoadUcode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return 0;
 }
 
-UCFUNC int c_SPLoadUcodeEx(gfxd_macro_t *m, int n_macro)
+UCFUNC int c_SPLoadUcodeEx(gfxd_macro_t *m, gfxd_macro_t *m_list, int n_macro)
 {
 	if (n_macro < 2)
 		return -1;
-	if (m[0].id != gfxd_DPHalf1)
+	if (m_list[0].id != gfxd_DPHalf1)
 		return -1;
-	uint32_t uc_dstart = argvu(&m[0], 0);
-	if (m[1].id != gfxd_LoadUcode)
+	uint32_t uc_dstart = argvu(&m_list[0], 0);
+	if (m_list[1].id != gfxd_LoadUcode)
 		return -1;
-	uint32_t uc_start = argvu(&m[1], 0);
-	uint32_t uc_dsize = argvu(&m[1], 1);
+	uint32_t uc_start = argvu(&m_list[1], 0);
+	uint32_t uc_dsize = argvu(&m_list[1], 1);
 	m->id = gfxd_SPLoadUcodeEx;
 	argu(m, 0, "uc_start", uc_start, gfxd_Uctext);
 	argu(m, 1, "uc_dstart", uc_dstart, gfxd_Ucdata);

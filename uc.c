@@ -24,9 +24,9 @@ UCFUNC int disas(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	return d_Invalid(m, hi, lo);
 }
 
-UCFUNC int combine(gfxd_macro_t *m, int num)
+UCFUNC int combine(gfxd_macro_t *m, gfxd_macro_t *m_list, int num)
 {
-	int opcode = macro_tbl[m->id].opcode;
+	int opcode = macro_tbl[m_list[0].id].opcode;
 
 	for (int i = 0; i < sizeof(macro_tbl) / sizeof(macro_tbl[0]); i++)
 	{
@@ -35,7 +35,7 @@ UCFUNC int combine(gfxd_macro_t *m, int num)
 			&& t->opcode == opcode
 			&& (t->ext == 0 || config.emit_ext_macro != 0))
 		{
-			if (t->combine_fn(m, num) == 0)
+			if (t->combine_fn(m, m_list, num) == 0)
 				return 0;
 		}
 	}

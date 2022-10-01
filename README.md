@@ -368,6 +368,18 @@ Returns the number of `Gfx` packets within the current macro.
 
 ---
 
+##### `int gfxd_foreach_pkt(int (*fn)(void))`
+
+Run `fn` for each individual sub-packet the current macro is made up of. During
+execution of `fn`, the current sub-packet becomes the current macro that is
+used by other macro information functions. If the current macro is made up of
+only a single packet it is processed as a single sub-packet, there is no need
+to check if the current macro is a multi-packet macro. If at any point `fn`
+returns 0, the remaining sub-packets are skipped and the return value of `fn`
+is returned. If `fn` is null no processing is done and 0 is returned.
+
+---
+
 ##### `const void *gfxd_macro_data()`
 Returns a pointer to the input data for the current macro. The data is not
 byte-swapped. The data has a length of `sizeof(Gfx) * gfxd_macro_packets()`.
