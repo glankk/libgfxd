@@ -112,6 +112,7 @@ struct gfxd_config
 	gfxd_mtx_fn_t *		mtx_fn;
 	gfxd_lookat_fn_t *	lookat_fn;
 	gfxd_light_fn_t *	light_fn;
+	gfxd_lightsn_fn_t *	lightsn_fn;
 	gfxd_seg_fn_t *		seg_fn;
 	gfxd_vtx_fn_t *		vtx_fn;
 	gfxd_vp_fn_t *		vp_fn;

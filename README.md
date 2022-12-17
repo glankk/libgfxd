@@ -229,10 +229,17 @@ Set the callback function for lookat array arguments. The argument type is
 
 ---
 
-##### `typedef int gfxd_light_fn_t(uint32_t light, int32_t count)`
+##### `typedef int gfxd_light_fn_t(uint32_t light)`
 ##### `void gfxd_light_callback(gfxd_light_fn_t *fn)`
-Set the callback function for light array arguments. The argument type is
-`gfxd_Lightptr`. The number of light structures is in `count`.
+Set the callback function for diffuse (`Light *`) or ambient (`Ambient *`)
+light arguments. The argument type is `gfxd_Lightptr`.
+
+---
+
+##### `typedef int gfxd_lightsn_fn_t(uint32_t lightsn, int32_t num)`
+##### `void gfxd_lightsn_callback(gfxd_lightsn_fn_t *fn)`
+Set the callback function for Lights_M_ arguments. The argument type is
+`gfxd_Lightsn`. The number of diffuse lights used is in `num`.
 
 ---
 

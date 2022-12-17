@@ -447,25 +447,34 @@ int gfxd_arg_callbacks(int arg_num)
 		{
 			if (config.light_fn != NULL)
 			{
+				return config.light_fn(
+					typed_arg_u(gfxd_Lightptr, 0));
+			}
+			break;
+		}
+		case gfxd_Lightsn:
+		{
+			if (config.lightsn_fn != NULL)
+			{
 				int32_t num;
 				if (id == gfxd_SPSetLights1)
-					num = 1;
+					num = NUMLIGHTS_1;
 				else if (id == gfxd_SPSetLights2)
-					num = 2;
+					num = NUMLIGHTS_2;
 				else if (id == gfxd_SPSetLights3)
-					num = 3;
+					num = NUMLIGHTS_3;
 				else if (id == gfxd_SPSetLights4)
-					num = 4;
+					num = NUMLIGHTS_4;
 				else if (id == gfxd_SPSetLights5)
-					num = 5;
+					num = NUMLIGHTS_5;
 				else if (id == gfxd_SPSetLights6)
-					num = 6;
+					num = NUMLIGHTS_6;
 				else if (id == gfxd_SPSetLights7)
-					num = 7;
+					num = NUMLIGHTS_7;
 				else
-					num = 1;
-				return config.light_fn(
-					typed_arg_u(gfxd_Lightptr, 0),
+					num = NUMLIGHTS_0;
+				return config.lightsn_fn(
+					typed_arg_u(gfxd_Lightsn, 0),
 					num);
 			}
 			break;
@@ -588,6 +597,11 @@ void gfxd_lookat_callback(gfxd_lookat_fn_t *fn)
 void gfxd_light_callback(gfxd_light_fn_t *fn)
 {
 	config.light_fn = fn;
+}
+
+void gfxd_lightsn_callback(gfxd_lightsn_fn_t *fn)
+{
+	config.lightsn_fn = fn;
 }
 
 void gfxd_seg_callback(gfxd_seg_fn_t *fn)

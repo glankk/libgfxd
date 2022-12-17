@@ -82,10 +82,10 @@ enum
 	gfxd_Wscale,		/* w-component scale (perspnorm) */
 	gfxd_Seg,		/* segment number */
 	gfxd_Segptr,		/* segment pointer */
-	gfxd_Lightsn,		/* dereferenced Lighstn pointer */
+	gfxd_Lightsn,		/* dereferenced LightsM (0-7 or n) pointer */
 	gfxd_Numlights,		/* light count (NUMLIGHTS_*) */
 	gfxd_Lightnum,		/* light number (LIGHT_*) */
-	gfxd_Lightptr,		/* light pointer */
+	gfxd_Lightptr,		/* diffuse or ambient light pointer */
 	gfxd_Tcscale,		/* texture coordinate scale */
 	gfxd_Switch,		/* on-off value */
 	gfxd_St,		/* vertex coordinate (q10.5) */
@@ -323,8 +323,11 @@ void gfxd_mtx_callback(gfxd_mtx_fn_t *fn);
 typedef int gfxd_lookat_fn_t(uint32_t lookat, int32_t count);
 void gfxd_lookat_callback(gfxd_lookat_fn_t *fn);
 
-typedef int gfxd_light_fn_t(uint32_t light, int32_t count);
+typedef int gfxd_light_fn_t(uint32_t light);
 void gfxd_light_callback(gfxd_light_fn_t *fn);
+
+typedef int gfxd_lightsn_fn_t(uint32_t lightsn, int32_t count);
+void gfxd_lightsn_callback(gfxd_lightsn_fn_t *fn);
 
 typedef int gfxd_seg_fn_t(uint32_t seg, int32_t num);
 void gfxd_seg_callback(gfxd_seg_fn_t *fn);
