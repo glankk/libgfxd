@@ -443,6 +443,7 @@ int gfxd_arg_callbacks(int arg_num)
 			}
 			break;
 		}
+		case gfxd_Lightsn:
 		case gfxd_Lightptr:
 		{
 			if (config.light_fn != NULL)
