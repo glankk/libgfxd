@@ -131,7 +131,7 @@ without any separation between macros, which is probably not what you want.
 
 ---
 
-##### `typedef int gfxd_macro_fn_t(void);`
+##### `typedef int gfxd_macro_fn_t(void)`
 ##### `void gfxd_macro_fn(gfxd_macro_fn_t *fn)`
 Set `fn` to be the macro handler function. `fn` can be null, in which case the
 handler is reset to the default. If `fn` returns a value other than 0, execution
@@ -146,7 +146,7 @@ callback returns zero, or if there is no callback for the given argument.
 
 ---
 
-##### `typedef void gfxd_arg_fn_t(int arg_num);`
+##### `typedef void gfxd_arg_fn_t(int arg_num)`
 ##### `void gfxd_arg_fn(gfxd_arg_fn_t *fn)`
 Set `fn` to be the argument handler function, called by `gfxd_macro_dflt`,
 for each argument in the current macro, not counting the dynamic display list
