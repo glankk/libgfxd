@@ -1,5 +1,6 @@
 #ifndef GFXD_H
 #define GFXD_H
+#include <stdarg.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -349,6 +350,7 @@ void gfxd_dram_callback(gfxd_dram_fn_t *fn);
 
 int gfxd_write(const void *buf, int count);
 int gfxd_puts(const char *str);
+int gfxd_vprintf(const char *fmt, va_list arg);
 int gfxd_printf(const char *fmt, ...);
 int gfxd_print_value(int type, const gfxd_value_t *value);
 
