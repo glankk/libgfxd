@@ -239,6 +239,9 @@
 # define G_CULL_FRONT		(gI_(0b1) << 9)
 # define G_CULL_BACK		(gI_(0b1) << 10)
 # define G_SHADING_SMOOTH	(gI_(0b1) << 21)
+# if defined(F3DEX2_POS_LIGHTS)
+#  define G_LIGHTING_POSITIONAL	(gI_(0b1) << 22)
+# endif
 #endif
 
 /* othermode lo */
@@ -3457,10 +3460,25 @@ typedef struct
 	char		pad3;
 } Light_t;
 
+#if defined(F3DEX_GBI_2) && defined(F3DEX2_POS_LIGHTS)
+typedef struct
+{
+	uint8_t		col[3];
+	uint8_t		ca;	/* Constant Attenuation, Must be nonzero */
+	uint8_t		colc[3];
+	uint8_t		la;	/* Linear Attenuation */
+	int16_t		pos[3];
+	uint8_t		qa;	/* Quadratic Attenuation */
+} PosLight_t;
+#endif
+
 typedef union
 {
 	_Alignas(8)
 	Light_t		l;
+#if defined(F3DEX_GBI_2) && defined(F3DEX2_POS_LIGHTS)
+	PosLight_t	p;
+#endif
 } Light;
 
 typedef struct

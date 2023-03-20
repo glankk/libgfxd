@@ -423,6 +423,15 @@ UCFUNC int argfn_gm(const gfxd_value_t *v)
 			n += gfxd_puts(" | ");
 		n += gfxd_puts("G_SHADING_SMOOTH");
 	}
+#if defined(F3DEX_GBI_2) && defined(F3DEX2_POS_LIGHTS)
+	if (arg & G_LIGHTING_POSITIONAL)
+	{
+		if (n > 0)
+			n += gfxd_puts(" | ");
+		n += gfxd_puts("G_LIGHTING_POSITIONAL");
+		arg &= ~G_LIGHTING_POSITIONAL;
+	}
+#endif
 	if (arg & G_CLIPPING)
 	{
 		if (n > 0)
