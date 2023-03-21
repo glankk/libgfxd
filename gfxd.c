@@ -283,19 +283,26 @@ int gfxd_puts(const char *str)
 	return gfxd_write(str, strlen(str));
 }
 
-int gfxd_printf(const char *fmt, ...)
+int gfxd_vprintf(const char *fmt, va_list arg)
 {
 	char s[256];
 
-	va_list arg;
-	va_start(arg, fmt);
 	int n = vsnprintf(s, sizeof(s), fmt, arg);
-	va_end(arg);
 
 	if (n > sizeof(s) - 1)
 		n = sizeof(s) - 1;
 
 	return gfxd_write(s, n);
+}
+
+int gfxd_printf(const char *fmt, ...)
+{
+	va_list arg;
+	va_start(arg, fmt);
+	int ret = gfxd_vprintf(fmt, arg);
+	va_end(arg);
+
+	return ret;
 }
 
 int gfxd_print_value(int type, const gfxd_value_t *value)

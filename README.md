@@ -488,6 +488,7 @@ characters written is returned.
 ---
 
 ##### `int gfxd_printf(const char *fmt, ...)`
+##### `int gfxd_vprintf(const char *fmt, va_list arg)`
 Insert the printf-formatted string described by `fmt` and additional arguments
 into the output. Limited to 255 characters. The number of characters written is
 returned.
