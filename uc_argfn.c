@@ -1611,8 +1611,7 @@ UCFUNC int argfn_mw(const gfxd_value_t *v)
 #if defined(F3D_GBI) || defined(F3DEX_GBI)
 		case G_MW_POINTS:
 			return gfxd_puts("G_MW_POINTS");
-#endif
-#if defined(F3DEX_GBI_2)
+#elif defined(F3DEX_GBI_2)
 		case G_MW_FORCEMTX:
 			return gfxd_puts("G_MW_FORCEMTX");
 #endif
