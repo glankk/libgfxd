@@ -2187,12 +2187,12 @@ UCFUNC int d_SPGeometryMode(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 {
 	uint32_t clearbits = getfield(~hi, 24, 0);
 	uint32_t setbits = lo;
-	if (clearbits == 0 && setbits != 0)
-		return d_SPSetGeometryMode(m, hi, lo);
-	else if (clearbits != 0 && setbits == 0)
-		return d_SPClearGeometryMode(m, hi, lo);
-	else if (clearbits == 0x00FFFFFF)
+	if (clearbits == 0x00FFFFFF)
 		return d_SPLoadGeometryMode(m, hi, lo);
+	else if (clearbits == 0)
+		return d_SPSetGeometryMode(m, hi, lo);
+	else if (setbits == 0)
+		return d_SPClearGeometryMode(m, hi, lo);
 	else
 	{
 		m->id = gfxd_SPGeometryMode;

@@ -352,6 +352,11 @@ UCFUNC int argfn_gm(const gfxd_value_t *v)
 {
 	int n = 0;
 	uint32_t arg = v->u;
+	if (arg == 0)
+	{
+		n += gfxd_puts("0");
+		return n;
+	}
 	if (arg & G_ZBUFFER)
 		n += gfxd_puts("G_ZBUFFER");
 	if (arg & G_TEXTURE_ENABLE)
