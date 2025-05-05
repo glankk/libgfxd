@@ -14,7 +14,9 @@
 
 #define UCFUNC static inline
 
-#define config gfxd_config__
+#define config (*gfxd_config_ptr)
+
+extern TLOCAL struct gfxd_config* gfxd_config_ptr;
 
 typedef int gfxd_argfn_t(const gfxd_value_t *v);
 
@@ -120,7 +122,5 @@ struct gfxd_config
 	gfxd_ucdata_fn_t *	ucdata_fn;
 	gfxd_dram_fn_t *	dram_fn;
 };
-
-extern TLOCAL struct gfxd_config gfxd_config__;
 
 #endif

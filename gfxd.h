@@ -380,6 +380,12 @@ const gfxd_value_t *gfxd_value_by_type(int type, int idx);
 int gfxd_arg_valid(int arg_num);
 int gfxd_arg_callbacks(int arg_num);
 
+
+struct gfxd_config* gfxd_alloc_config(void);
+void gfxd_free_config(struct gfxd_config* config);
+void gfxd_set_config(struct gfxd_config* config);
+struct gfxd_config* gfxd_get_config(void);
+
 extern const gfxd_ucode_t gfxd_f3d;
 extern const gfxd_ucode_t gfxd_f3db;
 extern const gfxd_ucode_t gfxd_f3dex;
