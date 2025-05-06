@@ -500,3 +500,35 @@ Insert the type-formatted value into the output. The type should be one of the
 constants in `gfxd.h`. The number of characters written is returned. The
 macro argument with index `n` can be printed with
 `gfxd_print_value(gfxd_arg_type(n), gfxd_arg_value(n))`.
+
+## Multiple configurations
+A single global or thread-local config is used by default, but multiple
+configurations can be used to quickly switch back and forth between
+different settings.
+
+---
+
+##### `struct gfxd_config *gfxd_alloc_config(void)`
+Allocates a new default-initialized config struct. The return value is an
+opaque pointer to a `struct gfxd_config` that is not meant to be dereferenced,
+only used with `gfxd_free_config` and `gfxd_set_config`.
+
+---
+
+##### `void gfxd_free_config(struct gfxd_config *config)`
+Frees a config struct previously allocated with `gfxd_alloc_config`. The
+config struct must be deselected by `gfxd_set_config` first.
+
+---
+
+##### `void gfxd_set_config(struct gfxd_config *config)`
+Selects the config struct to be used when configuring and executing gfxdis.
+Must not be used while gfxd is executing. Setting `config` to `NULL` selects
+the global or thread-local config.
+
+---
+
+##### `struct gfxd_config *gfxd_get_config(void)`
+Returns a pointer to the currently selected config.
+
+---
