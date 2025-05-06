@@ -217,26 +217,26 @@ const struct gfxd_config gfxd_default_config_init =
 };
 
 static TLOCAL struct gfxd_config gfxd_default_config = gfxd_default_config_init;
-TLOCAL struct gfxd_config* gfxd_config_ptr = &gfxd_default_config;
+TLOCAL struct gfxd_config *gfxd_config_ptr = &gfxd_default_config;
 
-struct gfxd_config* gfxd_alloc_config(void)
+struct gfxd_config *gfxd_alloc_config(void)
 {
-	struct gfxd_config* cfg = malloc(sizeof(struct gfxd_config));
+	struct gfxd_config *cfg = malloc(sizeof(struct gfxd_config));
 	memcpy(cfg, &gfxd_default_config_init, sizeof(sizeof(struct gfxd_config)));
 	return cfg;
 }
 
-void gfxd_free_config(struct gfxd_config* cfg)
+void gfxd_free_config(struct gfxd_config *cfg)
 {
 	free(cfg);
 }
 
-void gfxd_set_config(struct gfxd_config* cfg)
+void gfxd_set_config(struct gfxd_config *cfg)
 {
 	gfxd_config_ptr = cfg;
 }
 
-struct gfxd_config* gfxd_get_config(void) {
+struct gfxd_config *gfxd_get_config(void) {
 	return gfxd_config_ptr;
 }
 
