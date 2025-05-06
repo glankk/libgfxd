@@ -233,7 +233,14 @@ void gfxd_free_config(struct gfxd_config *cfg)
 
 void gfxd_set_config(struct gfxd_config *cfg)
 {
-	gfxd_config_ptr = cfg;
+	if (cfg != NULL)
+	{
+		gfxd_config_ptr = cfg;
+	}
+	else
+	{
+		gfxd_config_ptr = &gfxd_default_config;
+	}
 }
 
 struct gfxd_config *gfxd_get_config(void) {
