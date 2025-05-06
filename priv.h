@@ -16,7 +16,7 @@
 
 #define config (*gfxd_config_ptr)
 
-extern TLOCAL struct gfxd_config* gfxd_config_ptr;
+extern TLOCAL struct gfxd_config *gfxd_config_ptr;
 
 typedef int gfxd_argfn_t(const gfxd_value_t *v);
 
