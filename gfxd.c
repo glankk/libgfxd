@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
 # include <io.h>
@@ -175,7 +176,7 @@ static uint32_t typed_arg_u(int type, int idx)
 }
 
 
-TLOCAL struct gfxd_config config =
+const struct gfxd_config gfxd_default_config_init =
 {
 	.ucode = NULL,
 	.endian = gfxd_endian_big,
@@ -214,6 +215,37 @@ TLOCAL struct gfxd_config config =
 	.ucdata_fn = NULL,
 	.dram_fn = NULL,
 };
+
+static TLOCAL struct gfxd_config gfxd_default_config = gfxd_default_config_init;
+TLOCAL struct gfxd_config *gfxd_config_ptr = &gfxd_default_config;
+
+struct gfxd_config *gfxd_alloc_config(void)
+{
+	struct gfxd_config *cfg = malloc(sizeof(struct gfxd_config));
+	memcpy(cfg, &gfxd_default_config_init, sizeof(sizeof(struct gfxd_config)));
+	return cfg;
+}
+
+void gfxd_free_config(struct gfxd_config *cfg)
+{
+	free(cfg);
+}
+
+void gfxd_set_config(struct gfxd_config *cfg)
+{
+	if (cfg != NULL)
+	{
+		gfxd_config_ptr = cfg;
+	}
+	else
+	{
+		gfxd_config_ptr = &gfxd_default_config;
+	}
+}
+
+struct gfxd_config *gfxd_get_config(void) {
+	return gfxd_config_ptr;
+}
 
 void gfxd_input_buffer(const void *buf, int size)
 {
