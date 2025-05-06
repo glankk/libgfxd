@@ -511,7 +511,8 @@ different settings.
 ##### `struct gfxd_config *gfxd_alloc_config(void)`
 Allocates a new default-initialized config struct. The return value is an
 opaque pointer to a `struct gfxd_config` that is not meant to be dereferenced,
-only used with `gfxd_free_config` and `gfxd_set_config`.
+only used with `gfxd_free_config` and `gfxd_set_config`. The config struct
+should be freed with `gfxd_free_config` when it is no longer needed.
 
 ---
 
@@ -525,10 +526,3 @@ config struct must be deselected by `gfxd_set_config` first.
 Selects the config struct to be used when configuring and executing gfxdis.
 Must not be used while gfxd is executing. Setting `config` to `NULL` selects
 the global or thread-local config.
-
----
-
-##### `struct gfxd_config *gfxd_get_config(void)`
-Returns a pointer to the currently selected config.
-
----
