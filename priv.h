@@ -1,5 +1,6 @@
 #ifndef GFXD_PRIV_H
 #define GFXD_PRIV_H
+#include "gbi.h"
 #include "gfxd.h"
 
 #ifdef CONFIG_MT
@@ -14,7 +15,7 @@
 
 #define UCFUNC static inline
 
-#define config (*gfxd_config_ptr)
+#define config (*gfxd_get_config())
 
 extern TLOCAL struct gfxd_config *gfxd_config_ptr;
 
