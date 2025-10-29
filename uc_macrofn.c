@@ -2435,7 +2435,7 @@ UCFUNC int d_SPDma_io(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 		argi(m, 0, "flag", flag, gfxd_Dmaflag);
 		argu(m, 1, "dmem", getfield(hi, 10, 13) * 8, gfxd_Dmem);
 		argu(m, 2, "dram", lo, gfxd_Dram);
-		argu(m, 3, "size", getfield(hi, 12, 10) + 1, gfxd_Size);
+		argu(m, 3, "size", getfield(hi, 12, 0) + 1, gfxd_Size);
 		return 0;
 	}
 }
@@ -2445,7 +2445,7 @@ UCFUNC int d_SPDmaRead(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	m->id = gfxd_SPDmaRead;
 	argu(m, 0, "dmem", getfield(hi, 10, 13) * 8, gfxd_Dmem);
 	argu(m, 1, "dram", lo, gfxd_Dram);
-	argu(m, 2, "size", getfield(hi, 12, 10) + 1, gfxd_Size);
+	argu(m, 2, "size", getfield(hi, 12, 0) + 1, gfxd_Size);
 	return 0;
 }
 
@@ -2454,7 +2454,7 @@ UCFUNC int d_SPDmaWrite(gfxd_macro_t *m, uint32_t hi, uint32_t lo)
 	m->id = gfxd_SPDmaWrite;
 	argu(m, 0, "dmem", getfield(hi, 10, 13) * 8, gfxd_Dmem);
 	argu(m, 1, "dram", lo, gfxd_Dram);
-	argu(m, 2, "size", getfield(hi, 12, 10) + 1, gfxd_Size);
+	argu(m, 2, "size", getfield(hi, 12, 0) + 1, gfxd_Size);
 	return 0;
 }
 #endif
