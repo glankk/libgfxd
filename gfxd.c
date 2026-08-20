@@ -145,6 +145,14 @@ static void get_more_input(void)
 			swap_words(&gfx);
 
 			int ret = config.ucode->disas_fn(m, gfx.hi, gfx.lo);
+			if (config.stop_on_end != 0
+				&& (m->id == gfxd_SPBranchList
+					|| m->id == gfxd_SPEndDisplayList))
+			{
+				state.n_gfx++;
+				state.end_input = 1;
+				return;
+			}
 			if (ret != 0 && config.stop_on_invalid != 0)
 			{
 				state.end_input = 1;
